@@ -15,7 +15,7 @@ export const generateRouter = createTRPCRouter({
     ).mutation(({ctx, input})=> {
         console.log("we are here", input.prompt);
         return{
-            message: "success"
+            message: "success!"
         }
     })
 });
