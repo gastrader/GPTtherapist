@@ -1,9 +1,11 @@
+
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import {createTRPCRouter,protectedProcedure} from "~/server/api/trpc";
 import  { Configuration, OpenAIApi } from "openai";
 import { env } from "~/env.mjs";
+
 
 const configuration = new Configuration({
     apiKey: env.OPENAI_API_KEY,
@@ -52,7 +54,8 @@ export const generateRouter = createTRPCRouter({
 
         const message = response.data.choices[0]?.message?.content
 
-        const storeMessage = await ctx.prisma.message.create({
+
+        await ctx.prisma.message.create({
             data: {
                 prompt: input.prompt,
                 ai_response: message,

@@ -1,14 +1,20 @@
 import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useState } from "react";
 import { FormGroup } from "~/component/FormGroup";
 import { Input } from "~/component/Input";
+import { useBuyCredits } from "~/hooks/useBuyCredits";
 import { api } from "~/utils/api";
 
 
 const GeneratePage: NextPage = () => {
-    
+
+    const {buyCredits} = useBuyCredits();
+
+    const session = useSession();
+    const isLoggedIn = !!session.data;
+
     const [form, setForm] = useState({
         prompt: "",
     });
@@ -43,10 +49,7 @@ const GeneratePage: NextPage = () => {
                 [key]: e.target.value,
             }))
         }
-    }
-
-    const session = useSession();
-    const isLoggedIn = !!session.data;
+    }    
 
     return (
         <>
@@ -59,28 +62,26 @@ const GeneratePage: NextPage = () => {
                 <div className="gradient"/>
             </div>
             <main className="flex min-h-screen flex-col items-center justify-center">
-                {!isLoggedIn &&
-                <button onClick={() => {
-                    signIn().catch(console.error)}}>
-                        LOGIN
-                </button>
-                }
-                {isLoggedIn &&
-                    <button onClick={() => {
-                        signOut().catch(console.error)
-                    }}>
-                        LOGOUT
+                {isLoggedIn && (
+                    <>
+                    {/* HOOK ON FRONT END HITS BACKEND TRPC MUTATION, RETURNS CHECKOUT SESSION ID TO REDIRECT TO STRIPE WHEN USER CLICKS ON THIS BUTTON */}
+                    <button className="outline_btn items-center justify-center"
+                        onClick={() => { 
+                            buyCredits().catch(console.error) }}>Buy Credits
                     </button>
-                }
-                {session.data?.user.name}
+                    </>
+                
+                )}
+                
                 <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
                     <FormGroup>
-                        <label> Prompt: </label>
+                        <label className="items-start"> Prompt: </label>
                         <Input type="text"
                             value={form.prompt}
                             onChange={updateForm("prompt")}>
                         </Input>
                     </FormGroup>
+                    
                     <button className="black_btn">Submit</button>
                 </form>
                 <div> {aiMessage} </div>
