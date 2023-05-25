@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useState } from "react";
 import { FormGroup } from "~/component/FormGroup";
@@ -32,6 +33,9 @@ const GeneratePage: NextPage = () => {
         }
     }
 
+    const session = useSession();
+    const isLoggedIn = !!session.data;
+
     return (
         <>
             <Head>
@@ -43,6 +47,20 @@ const GeneratePage: NextPage = () => {
                 <div className="gradient"/>
             </div>
             <main className="flex min-h-screen flex-col items-center justify-center">
+                {!isLoggedIn &&
+                <button onClick={() => {
+                    signIn().catch(console.error)}}>
+                        LOGIN
+                </button>
+                }
+                {isLoggedIn &&
+                    <button onClick={() => {
+                        signOut().catch(console.error)
+                    }}>
+                        LOGOUT
+                    </button>
+                }
+                {session.data?.user.name}
                 <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
                     <FormGroup>
                         <label> Prompt: </label>
