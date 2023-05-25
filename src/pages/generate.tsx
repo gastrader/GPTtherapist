@@ -13,7 +13,15 @@ const GeneratePage: NextPage = () => {
         prompt: "",
     });
 
-    const generateResponse = api.generate.generateResponse.useMutation();
+    const [aiMessage, setAiMessage] = useState('')
+
+    const generateResponse = api.generate.generateResponse.useMutation({
+        onSuccess(data){
+            console.log("mutation finished", data.aiMessage)
+            if (!data.aiMessage) return;
+            setAiMessage(data.aiMessage)
+        }
+    });
 
     function handleFormSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -21,6 +29,10 @@ const GeneratePage: NextPage = () => {
         generateResponse.mutate({
             prompt: form.prompt,
         });
+        setForm((prev) => ({
+            ...prev,
+            prompt: "",
+        }))
 
     }
 
@@ -71,6 +83,7 @@ const GeneratePage: NextPage = () => {
                     </FormGroup>
                     <button className="black_btn">Submit</button>
                 </form>
+                <div> {aiMessage} </div>
             </main>
         </>
     );
