@@ -51,10 +51,11 @@ export const generateRouter = createTRPCRouter({
                 { "role": "system", "content": "a compassionate therapist, who is interested in learning more and giving actionable but helpful advice." },
                 { "role": "user", "content": input.prompt }],
         });
+        
 
         const message = response.data.choices[0]?.message?.content
 
-
+        //TODO FIX LIOL 
         await ctx.prisma.message.create({
             data: {
                 prompt: input.prompt,

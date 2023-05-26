@@ -8,7 +8,9 @@ export function Nav() {
     const session = useSession();
     const isLoggedIn = !!session.data;
 
-    const credits = api.user.getCredits.useQuery();
+    // console.log(isLoggedIn);
+    
+    const {data:credits} = api.user.getCredits.useQuery(undefined, {enabled: isLoggedIn});
     
     return <header className="px-4 container mx-auto text-gray-500 flex justify-between h-16 items-center pt-3" >
         <Link href="/" className="flex gap-2 flex-center">
@@ -23,7 +25,7 @@ export function Nav() {
             {isLoggedIn && (
                 <li className="flex gap-2 items-center">
                 
-                    <p>Credits Remaining: {credits.data}</p>                    
+                    <p>Credits Remaining: {credits}</p>                    
                     <button  className="outline_btn" onClick={() => {
                         signOut({ callbackUrl: 'http://localhost:3000/' }).catch(console.error)
                     }}>

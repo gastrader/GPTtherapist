@@ -9,7 +9,8 @@ import { api } from "~/utils/api";
 
 
 const GeneratePage: NextPage = () => {
-
+    
+    const utils = api.useContext()
     const {buyCredits} = useBuyCredits();
 
     const session = useSession();
@@ -26,6 +27,7 @@ const GeneratePage: NextPage = () => {
             console.log("mutation finished", data.aiMessage)
             if (!data.aiMessage) return;
             setAiMessage(data.aiMessage)
+            void utils.user.getCredits.invalidate()
         }
     });
 
@@ -39,7 +41,6 @@ const GeneratePage: NextPage = () => {
             ...prev,
             prompt: "",
         }))
-
     }
 
     function updateForm(key: string) {
