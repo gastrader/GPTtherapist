@@ -8,6 +8,7 @@ import { useBuyCredits } from "~/hooks/useBuyCredits";
 import { api } from "~/utils/api";
 
 
+
 const GeneratePage: NextPage = () => {
     
     const utils = api.useContext()
@@ -24,7 +25,7 @@ const GeneratePage: NextPage = () => {
 
     const generateResponse = api.generate.generateResponse.useMutation({
         onSuccess(data){
-            console.log("mutation finished", data.aiMessage)
+            console.log("mutation finished:", data.aiMessage)
             if (!data.aiMessage) return;
             setAiMessage(data.aiMessage)
             void utils.user.getCredits.invalidate()
@@ -70,6 +71,7 @@ const GeneratePage: NextPage = () => {
                         onClick={() => { 
                             buyCredits().catch(console.error) }}>Buy Credits
                     </button>
+                    
                     </>
                 
                 )}
