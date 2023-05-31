@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
@@ -22,18 +23,24 @@ const GeneratePage: NextPage = () => {
     });
 
     const [aiMessage, setAiMessage] = useState('')
+    const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const generateResponse = api.generate.generateResponse.useMutation({
         onSuccess(data){
             console.log("mutation finished:", data.aiMessage)
             if (!data.aiMessage) return;
+            setIsVideoPlaying(true)
             setAiMessage(data.aiMessage)
+            setIsLoading(false)
             void utils.user.getCredits.invalidate()
         }
     });
 
     function handleFormSubmit(e: React.FormEvent) {
         e.preventDefault();
+        setIsVideoPlaying(false);
+        setIsLoading(true);
         //SUBMIT FORM DATA TO BACKEND.
         generateResponse.mutate({
             prompt: form.prompt,
@@ -87,7 +94,19 @@ const GeneratePage: NextPage = () => {
                     
                     <button className="black_btn">Submit</button>
                 </form>
-                <div> {aiMessage} </div>
+                
+                {/* <div className="my-10 mx-5 w-[200px]" style={{ borderRadius: '70%', overflow: 'hidden', }}> */}
+                <div className="my-10 mx-5 w-[500px]" >
+                    
+                    {isLoading ? (
+                        <div className="flex justify-center align-middle"> Loading... </div>
+                    ):
+                    isVideoPlaying ? (
+                        <video controls autoPlay>
+                            <source src={aiMessage} type="video/mp4" />
+                        </video>
+                    ): null}
+                </div>
             </main>
         </>
     );

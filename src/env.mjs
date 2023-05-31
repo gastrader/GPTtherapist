@@ -27,6 +27,8 @@ const server = z.object({
   PRICE_ID: z.string(),
   STRIPE_WEB_HOOK_SECRET: z.string(),
   ELEVENLABS_KEY: z.string(),
+  SECRET_ACCESS_KEY: z.string(),
+  ACCESS_KEY_ID: z.string(),
 });
 
 /**
@@ -58,6 +60,8 @@ const processEnv = {
   PRICE_ID: process.env.PRICE_ID,
   STRIPE_WEB_HOOK_SECRET: process.env.STRIPE_WEB_HOOK_SECRET,
   ELEVENLABS_KEY: process.env.ELEVENLABS_KEY,
+  SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
+  ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
