@@ -17,9 +17,11 @@ export function Nav() {
             <Image src="/assets/images/logo.svg" alt="logo" width="40" height="40" className="object-contain"/>
             <p className="font-semibold text-lg text-black tracking-wide">GPTtherapy</p>
         </Link>
-        <ul>
+        <ul className="flex gap-2">
             {isLoggedIn && (
-            <Link href="/generate" className="black_btn">Talk to a therapist</Link>)}
+            <>
+            <Link href="/generate" className="black_btn">Talk to a therapist</Link>
+            <Link href="/chat" className="black_btn">Text Me!</Link></>)}
         </ul>
         <ul>
             {isLoggedIn && (

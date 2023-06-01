@@ -76,6 +76,7 @@ export const generateRouter = createTRPCRouter({
                 userId: ctx.session.user.id,
             },
         });
+        console.log("the convo and convo ID are: ", convo, convo.id)
 
         const post_options = {
             method: 'POST',
