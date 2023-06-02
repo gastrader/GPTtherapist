@@ -55,14 +55,14 @@ export const chatRouter = createTRPCRouter({
         console.log("response is: ", message)
 
         
-        // const convo = await ctx.prisma.message.create({
-        //     data: {
-        //         prompt: input.prompt,
-        //         ai_response: message,
-        //         userId: ctx.session.user.id,
-        //     },
-        // });
-        // console.log("the convo and convo ID are: ", convo, convo.id)
+        const convo = await ctx.prisma.message.create({
+            data: {
+                text_prompt: input,
+                text_ai_response: message,
+                userId: ctx.session.user.id,
+            },
+        });
+        console.log("the convo and convo ID are: ", convo, convo.id)
 
         return {
             chatMessage: message

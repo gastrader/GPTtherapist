@@ -16,7 +16,7 @@ export const config = {
 const webhook = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
     const buf = await buffer(req);
-        // This is your Stripe CLI webhook secret for testing your endpoint locally.
+    // This is your Stripe CLI webhook secret for testing your endpoint locally.
     const endpointSecret = env.STRIPE_WEB_HOOK_SECRET;
 
     //get signature out of header

@@ -46,7 +46,7 @@ export const generateRouter = createTRPCRouter({
             },
             data: {
                 credits: {
-                    decrement:1,
+                    decrement:10,
                 }
             }
         });
@@ -71,8 +71,8 @@ export const generateRouter = createTRPCRouter({
         //TODO FIX LIOL 
         const convo = await ctx.prisma.message.create({
             data: {
-                prompt: input.prompt,
-                ai_response: message,
+                video_prompt: input.prompt,
+                video_ai_response: message,
                 userId: ctx.session.user.id,
             },
         });

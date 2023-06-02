@@ -6,15 +6,21 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 import { Nav } from "~/component/Nav";
+import { useRouter } from "next/router";
 
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
+
 }) => {
+
+  const router = useRouter();
+  const showNavBar = !router.pathname.includes('/payment')
+
   return (
     <SessionProvider session={session}>
-      <Nav />
+      {showNavBar && <Nav />}
       <Component {...pageProps} />
     </SessionProvider>
   );

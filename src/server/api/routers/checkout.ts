@@ -17,8 +17,8 @@ export const checkoutRouter = createTRPCRouter({
                 userId: ctx.session.user.id,
             },
             //TODO: Add /success and /fail MODALS
-            success_url: `${env.HOST_NAME}`,
-            cancel_url: `${env.HOST_NAME}`,
+            success_url: `${env.HOST_NAME}/payment/success`,
+            cancel_url: `${env.HOST_NAME}/payment/fail`,
             line_items: [
                 { price: env.PRICE_ID, quantity: 1 },
             ],
