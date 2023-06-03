@@ -124,6 +124,7 @@ export const generateRouter = createTRPCRouter({
                 }
             }
         };
+        
 
         const resultUrl = await pollForResultUrl();
         

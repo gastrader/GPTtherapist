@@ -79,9 +79,12 @@ const GeneratePage: NextPage = () => {
                             buyCredits().catch(console.error) }}>Buy Credits
                     </button>
                     
+                    
                     </>
+
                 
                 )}
+                
                 
                 <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
                     <FormGroup>
@@ -106,6 +109,7 @@ const GeneratePage: NextPage = () => {
                             <source src={aiMessage} type="video/mp4" />
                         </video>
                     ): null}
+                    
                 </div>
             </main>
         </>

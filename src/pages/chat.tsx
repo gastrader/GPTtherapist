@@ -16,7 +16,7 @@ const ChatPage: NextPage = () => {
     const utils = api.useContext()
     const [isLoading, setIsLoading] = useState(false)
     const [inputValue, setInputValue] = useState("");
-    const [chatLog, setChatLog] = useState<{ type: string, message: string }[]>([{ type: "bot", message: "Hi! My name is Thera, a compassionate AI therapist ready to lend an empathetic ear and guide you towards self-discovery and personal growth. Step into a realm of profound conversation where you can explore your innermost thoughts, find solace, and unlock the transformative power of therapeutic support."}]);
+    const [chatLog, setChatLog] = useState<{ type: string, message: string }[]>([{ type: "bot", message: "Hi! My name is Thera, a compassionate AI therapist ready to lend an empathetic ear and guide you towards self-discovery and personal growth. Step into a realm of profound conversation where you can explore your innermost thoughts, find solace, and unlock the transformative power of therapeutic support. Send me a message to get started!"}]);
     const chatMessagesRef = useRef<HTMLDivElement>(null);
     
     const chatResponse = api.chat.chatResponse.useMutation({
@@ -59,7 +59,7 @@ useEffect(() => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             
-            <div className="container rounded mx-auto max-w-[700px] ">
+            <div className="container rounded mx-auto max-w-[700px] mt-10 ">
                 <div className="flex flex-col h-[600px] bg-gray-100 rounded-xl border border-gray-600">
                     <h1 className="text-center py-3 text-white font-bold text-4xl blue_gradient">THERA CHAT 🤖 </h1>
                     <div className="overflow-y-auto flex-grow p-6" ref={chatMessagesRef}>

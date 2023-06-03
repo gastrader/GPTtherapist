@@ -1,10 +1,10 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 
+
 const Home: NextPage = () => {
 
     return (
-
         <section className="main">
             <Head>
                 <title>GPTtherapy</title>
