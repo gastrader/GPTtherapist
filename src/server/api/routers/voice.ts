@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
+//testing on mac
+
 
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -7,6 +9,7 @@ import { Configuration, OpenAIApi } from "openai";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { env } from "~/env.mjs";
 import fs from 'fs';
+
 
 const configuration = new Configuration({
     apiKey: env.OPENAI_API_KEY,
@@ -34,7 +37,7 @@ export const voiceRouter = createTRPCRouter({
             },
             data: {
                 credits: {
-                    decrement: 10,
+                    decrement: 1,
                 }
             }
         });
@@ -46,19 +49,28 @@ export const voiceRouter = createTRPCRouter({
             })
         }
         
-        function convertbase64tomp3(base64: string) {
-            const decodedData = Buffer.from(base64, 'base64');
-            const filePath = '/tmp/test.mp3';
-            const fileStream = fs.createWriteStream(filePath);
-            fileStream.write(decodedData);
-            fileStream.end();
-            fileStream.on('finish', () => {
-                console.log('MP3 file created successfully.');
-            });
-        }
-        console.log(convertbase64tomp3(input.audio))
+        // function convertbase64tomp3(base64: string) {
+        //     const decodedData = Buffer.from(base64, 'base64');
+        //     const filePath = `tmp/${ctx.session.user.id}_audio.mp3`
+        //     const fileStream = fs.createWriteStream(filePath);
+        //     fileStream.write(decodedData);
+        //     fileStream.end();
+        //     fileStream.on('finish', () => {
+        //         console.log('MP3 file created successfully.');
+                
+        //     });
+        // }
+        // convertbase64tomp3(input.audio);
 
-        //TODO: CONVERT BASE64toMP3 and TRANSCRIBE MP3 HERE
+
+
+
+        const filePath = `C:/Users/gavin/Javascript Projects/therapy_new2/tmp/cli2muaok0000599wgj698vy5_audio.mp3`;
+        const fileData = fs.createReadStream(filePath);
+
+        const resp = openai.createTranslation(fileData, "whisper-1");
+        console.log(resp)
+
 
         // const chatresponse = await openai.createChatCompletion({
         //     model: "gpt-3.5-turbo",
