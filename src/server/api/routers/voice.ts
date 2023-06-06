@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 //testing on mac
@@ -9,6 +11,7 @@ import { Configuration, OpenAIApi } from "openai";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { env } from "~/env.mjs";
 import fs from 'fs';
+import axios from "axios";
 
 
 const configuration = new Configuration({
@@ -24,7 +27,6 @@ export const voiceRouter = createTRPCRouter({
             audio: z.string() ,
         })
     ).mutation(async ({ ctx, input }) => {
-        // console.log("USER INPUT", input.audio);
         console.log("WE ARE IN DA BACKEND")
 
         //verify user has enough credits.
@@ -65,12 +67,40 @@ export const voiceRouter = createTRPCRouter({
 
 
 
-        const filePath = `C:/Users/gavin/Javascript Projects/therapy_new2/tmp/cli2muaok0000599wgj698vy5_audio.mp3`;
-        const fileData = fs.createReadStream(filePath);
+        const form = new FormData();
+        form.append("file", "C:/Users/gavin/Javascript Projects/therapy_new2/tmp/cli2muaok0000599wgj698vy5_audio.mp3");
+        form.append("model", "whisper-1");
 
-        const resp = openai.createTranslation(fileData, "whisper-1");
-        console.log(resp)
+        const options = {
+            method: 'POST',
+            url: 'https://api.openai.com/v1/audio/transcriptions',
+            headers: {
+                'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
+                Authorization: 'Bearer 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'
+            },
+            data: '[form]'
+        };
 
+        try{
+            const responsey = await axios.request(options);
+            if (responsey) {
+                console.log(responsey)
+            } else {
+                console.log("Waiting 2 more seconds"); // Poll every 2 seconds (adjust as needed)
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+        }}catch(error){
+            console.error('Error was:', error);
+            throw new TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: 'Failed to retrieve transcripty poo!',
+            });
+        }
+
+        // axios.request(options).then(function (response) {
+        //     console.log(response);
+        // }).catch(function (error) {
+        //     console.error(error);
+        // });
 
         // const chatresponse = await openai.createChatCompletion({
         //     model: "gpt-3.5-turbo",

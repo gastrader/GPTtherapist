@@ -37,7 +37,7 @@ const GeneratePage: NextPage = () => {
             const reader = new FileReader();
             reader.onloadend = () => {
                 const base64String = reader.result as string;
-                console.log(base64String)
+                console.log("Base 64 string is: ", base64String)
                 const splitIndex = base64String.indexOf(',') + 1;
                 if (splitIndex > 0) {
                     const base64 = base64String.substr(splitIndex);
@@ -50,6 +50,18 @@ const GeneratePage: NextPage = () => {
             reader.readAsDataURL(blob);
         });
     }
+    function transcribeBlob(blob: Blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const transcribedText = reader.result;
+                resolve(transcribedText);
+            };
+            reader.onerror = reject;
+            reader.readAsText(blob);
+        });
+    }
+
 
     return (
         <>
@@ -100,6 +112,7 @@ const GeneratePage: NextPage = () => {
                             .then((base64String) => {
                                 // console.log(base64String);
                                 voiceResponse.mutate({audio: base64String})
+
                             })
                             .catch((error) => {
                                 console.error('Error converting blob to base64:', error);
