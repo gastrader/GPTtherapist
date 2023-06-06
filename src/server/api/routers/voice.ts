@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -39,7 +41,7 @@ export const voiceRouter = createTRPCRouter({
             },
             data: {
                 credits: {
-                    decrement: 1,
+                    decrement: 10,
                 }
             }
         });
@@ -50,70 +52,107 @@ export const voiceRouter = createTRPCRouter({
                 message: 'You do not have enough credits..',
             })
         }
+
+        function delay(ms: number) {
+            return new Promise((resolve) => setTimeout (resolve, ms))
+        }
         
-        // function convertbase64tomp3(base64: string) {
-        //     const decodedData = Buffer.from(base64, 'base64');
-        //     const filePath = `tmp/${ctx.session.user.id}_audio.mp3`
-        //     const fileStream = fs.createWriteStream(filePath);
-        //     fileStream.write(decodedData);
-        //     fileStream.end();
-        //     fileStream.on('finish', () => {
-        //         console.log('MP3 file created successfully.');
-                
-        //     });
-        // }
-        // convertbase64tomp3(input.audio);
-
-
-
-
-        const form = new FormData();
-        form.append("file", "C:/Users/gavin/Javascript Projects/therapy_new2/tmp/cli2muaok0000599wgj698vy5_audio.mp3");
-        form.append("model", "whisper-1");
-
-        const options = {
-            method: 'POST',
-            url: 'https://api.openai.com/v1/audio/transcriptions',
-            headers: {
-                'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
-                Authorization: 'Bearer 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'
-            },
-            data: '[form]'
-        };
-
-        try{
-            const responsey = await axios.request(options);
-            if (responsey) {
-                console.log(responsey)
-            } else {
-                console.log("Waiting 2 more seconds"); // Poll every 2 seconds (adjust as needed)
-                await new Promise((resolve) => setTimeout(resolve, 2000));
-        }}catch(error){
-            console.error('Error was:', error);
-            throw new TRPCError({
-                code: 'INTERNAL_SERVER_ERROR',
-                message: 'Failed to retrieve transcripty poo!',
+        function convertbase64tomp3(base64: string): Promise<string> {
+            return new Promise((resolve, reject) => {
+                const decodedData = Buffer.from(base64, 'base64');
+                const filePath = `tmp/${ctx.session.user.id}_audio.mp3`;
+                const fileStream = fs.createWriteStream(filePath);
+                fileStream.write(decodedData);
+                fileStream.end();
+                fileStream.on('finish', () => {
+                    console.log('MP3 file created successfully.');
+                    // After the file is created, wait for 2 seconds and then make the API call
+                    delay(2000)
+                        .then(() => {
+                            openai.createTranscription(fs.createReadStream(filePath) as any, "whisper-1")
+                                .then((response) => {
+                                    const transcription = response.data.text;
+                                    resolve(transcription);
+                                })
+                                .catch((error) => {
+                                    reject(error);
+                                });
+                        })
+                        .catch((error) => {
+                            reject(error);
+                        });
+                });
             });
         }
 
-        // axios.request(options).then(function (response) {
-        //     console.log(response);
-        // }).catch(function (error) {
-        //     console.error(error);
-        // });
-
-        // const chatresponse = await openai.createChatCompletion({
-        //     model: "gpt-3.5-turbo",
-        //     //TODO: fetch users chat history to input here.
-        //     messages: [
-        //         { "role": "system", "content": "a compassionate therapist, who is interested in learning more and giving actionable but helpful advice. please keep your responses to around 50 words." },
-        //         { "role": "user", "content": input.audio }],
-        // });
+        const transcription = await convertbase64tomp3(input.audio);
+        console.log("The transcript is: ", transcription);
         
-        // const message = chatresponse.data.choices[0]?.message?.content
 
 
-        const resultUrl = "https://d-id-clips-prod.s3.us-west-2.amazonaws.com/google-oauth2%7C102007001941522101997/clp_vWmcYyrNSUZaFxBNJ2Zxv/amy-jcwCkr1grs.mp4?AWSAccessKeyId=AKIA5CUMPJBIJ7CPKJNP&Expires=1685653651&Signature=sgflUYsL7xavswHmGLmbPKPILMM%3D&X-Amzn-Trace-Id=Root%3D1-6477b713-7de7a8f039537d66031eb286%3BParent%3D0852d48371ffdb93%3BSampled%3D0%3BLineage%3D84e41ec0%3A0"
+        const chatresponse = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            //TODO: fetch users chat history to input here.
+            messages: [
+                { "role": "system", "content": "a compassionate therapist, who is interested in learning more and giving actionable but helpful advice. please keep your responses to around 50 words." },
+                { "role": "user", "content": transcription }],
+        });
+
+        const message = chatresponse.data.choices[0]?.message?.content
+        console.log("The therapist response is:", message)
+
+        //TO DO: ADD TO DB (const convo line)
+
+        const post_options = {
+            method: 'POST',
+            url: 'https://api.d-id.com/clips',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Basic Z2F2aW5wOTZAZ21haWwuY29t:QtjGa2adqzii57Tk5HOzR'
+            },
+            data: {
+                script: { type: 'text', input: message },
+                presenter_id: 'amy-jcwCkr1grs',
+                driver_id: 'uM00QMwJ9x'
+            }
+        };
+
+        const res = await axios.request(post_options)
+        const clipId: string = res.data.id
+        console.log("This clip id is: ", clipId)
+
+        const get_options = {
+            method: 'GET',
+            url: 'https://api.d-id.com/clips/' + clipId,
+            headers: { Authorization: 'Basic Z2F2aW5wOTZAZ21haWwuY29t:QtjGa2adqzii57Tk5HOzR' }
+        };
+
+        const pollForResultUrl = async () => {
+            while (true) {
+                try {
+                    const response = await axios.request(get_options);
+                    if (response.data.result_url) {
+                        console.log('Result URL:', response.data.result_url);
+                        return response.data.result_url;
+                    } else {
+                        console.log("Waiting 2 more seconds"); // Poll every 2 seconds (adjust as needed)
+                        await new Promise((resolve) => setTimeout(resolve, 2000));
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    throw new TRPCError({
+                        code: 'INTERNAL_SERVER_ERROR',
+                        message: 'Failed to retrieve result URL',
+                    });
+                }
+            }
+        };
+
+
+        const resultUrl = await pollForResultUrl();
+        
+        //TO TEST WITH:
+        // const resultUrl = "https://d-id-clips-prod.s3.us-west-2.amazonaws.com/google-oauth2%7C102007001941522101997/clp_vWmcYyrNSUZaFxBNJ2Zxv/amy-jcwCkr1grs.mp4?AWSAccessKeyId=AKIA5CUMPJBIJ7CPKJNP&Expires=1685653651&Signature=sgflUYsL7xavswHmGLmbPKPILMM%3D&X-Amzn-Trace-Id=Root%3D1-6477b713-7de7a8f039537d66031eb286%3BParent%3D0852d48371ffdb93%3BSampled%3D0%3BLineage%3D84e41ec0%3A0"
 
         return {
             aiMessage: resultUrl

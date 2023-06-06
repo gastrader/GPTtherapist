@@ -131,7 +131,6 @@ const GeneratePage: NextPage = () => {
                                 <source src={aiMessage} type="video/mp4" />
                             </video>
                         ) : null}
-
                 </div>
             </main>
         </>
