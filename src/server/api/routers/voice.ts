@@ -94,7 +94,7 @@ export const voiceRouter = createTRPCRouter({
             model: "gpt-3.5-turbo",
             //TODO: fetch users chat history to input here.
             messages: [
-                { "role": "system", "content": "a compassionate therapist, who is interested in learning more and giving actionable but helpful advice. please keep your responses to around 50 words." },
+                { "role": "system", "content": env.OPENAI_PROMPT },
                 { "role": "user", "content": transcription }],
         });
 

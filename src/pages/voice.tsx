@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
@@ -50,18 +51,6 @@ const GeneratePage: NextPage = () => {
             reader.readAsDataURL(blob);
         });
     }
-    function transcribeBlob(blob: Blob) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const transcribedText = reader.result;
-                resolve(transcribedText);
-            };
-            reader.onerror = reject;
-            reader.readAsText(blob);
-        });
-    }
-
 
     return (
         <>

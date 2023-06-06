@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { useBuyCredits } from "~/hooks/useBuyCredits";
 import { api } from "~/utils/api";
 import TypingAnimation from "~/component/typingAnimation";
+import newChat from "../../public/assets/images/newChat.svg";
+
 
 const ChatPage: NextPage = () => {
 
@@ -49,8 +51,12 @@ useEffect(() => {
     }
 }, [chatLog]);
 
+const resetChat = () => {
+    setChatLog([
+        { type: "bot", message: "Start a new chat!" },
+    ]);
+};
 
-    
     return (
         <>
             <Head>
@@ -59,7 +65,12 @@ useEffect(() => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             
-            <div className="container rounded mx-auto max-w-[700px] mt-10 ">
+            <div className="container rounded mx-auto mt-20 items-center justify-center max-w-[700px]">
+                <div className="absolute top-20 left-20">
+                    <button className="rounded-xl bg-blue-300 px-4 py-1 outline outline-black hover:bg-blue-500" onClick={resetChat}>
+                        New Chat
+                    </button>
+                </div>
                 <div className="flex flex-col h-[600px] bg-gray-100 rounded-xl border border-gray-600">
                     <h1 className="text-center py-3 text-white font-bold text-4xl blue_gradient">THERA CHAT 🤖 </h1>
                     <div className="overflow-y-auto flex-grow p-6" ref={chatMessagesRef}>
@@ -74,7 +85,7 @@ useEffect(() => {
                             {
                                 isLoading && 
                                 <div key={chatLog.length} className="flex-row justify-start">
-                                    <div className="bg-gray-300 rounded-lg p-4 text-black max-w-sm">
+                                    <div className="bg-gray-300 rounded-lg p-4 text-black max-w-min">
                                         <TypingAnimation/>
                                     </div>
                                 </div>

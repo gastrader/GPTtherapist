@@ -43,11 +43,12 @@ export const chatRouter = createTRPCRouter({
             })
         }
         
+        
         const chatresponse = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             
             messages: [
-                { "role": "system", "content": "a compassionate therapist, who is interested in learning more and giving actionable but helpful advice. Please feel free to ask for more detail if required to make a decision. Please keep your answers to around 50 words maximum." },
+                { "role": "system", "content": env.OPENAI_PROMPT },
                 { "role": "user", "content": input }],
         });
 

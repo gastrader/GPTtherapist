@@ -29,6 +29,7 @@ const server = z.object({
   ELEVENLABS_KEY: z.string(),
   SECRET_ACCESS_KEY: z.string(),
   ACCESS_KEY_ID: z.string(),
+  OPENAI_PROMPT: z.string(),
 });
 
 /**
@@ -62,6 +63,7 @@ const processEnv = {
   ELEVENLABS_KEY: process.env.ELEVENLABS_KEY,
   SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
   ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
+  OPENAI_PROMPT: process.env.OPENAI_PROMPT,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
