@@ -47,6 +47,10 @@ body {
     @apply rounded-2xl  bg-blue-500 py-1.5 px-5 text-white transition-all hover:bg-blue-600 text-center text-sm flex items-center justify-center;
 }
 
+.footer_btn {
+    @apply rounded-2xl  bg-[#fff5ca] py-1 px-2 text-[#5522fa] border transition-all text-center text-xs flex items-center justify-center hover:cursor-pointer hover:bg-gradient-to-tr from-[#fff5ca] to-[#fee5da];
+}
+
 .outline_btn {
     @apply rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm flex items-center justify-center;
 }

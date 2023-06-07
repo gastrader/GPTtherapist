@@ -1,7 +1,7 @@
 export const AboutUs = () => {
   return (
     <>
-    <section id="component-driven">
+    <section id="component-driven" className="bg-gray-200 py-6 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         <desc className="text-sky-500 mt-8 font-semibold">Healing-driven</desc>
         <h1 className="mt-4 max-w-3xl space-y-6 text-3xl text-slate-900 font-extrabold tracking-tight dark:text-slate-50">
@@ -10,11 +10,9 @@ export const AboutUs = () => {
         <div className="mt-4 max-w-3xl space-y-6 ">
           Immerse yourself in a world of mindfulness with our virtual therapy app. It&apos;s designed to support your mental health journey through AI-guided therapy, meditation, journaling, and productivity tools. Experience a comprehensive mental wellness platform that adapts to your evolving needs.
         </div>
-        <button color="sky" className="h-9 rounded-full text-m font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-blue-100 text-blue-600 hover:bg-blue-200 hover:text-blue-700 focus:ring-blue-600  mt-8">
+        <button color="sky" className="h-9 rounded-full text-m font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-blue-400 text-white hover:bg-blue-500  focus:ring-blue-600  mt-8">
           Learn more
         </button>
-        <div className="mt-20"></div>
-
       </div>
       
     </section>

@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { Nav } from "~/component/Nav";
 import { useRouter } from "next/router";
+import { Footer } from "~/component/Footer";
 
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -22,6 +23,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       {showNavBar && <Nav />}
       <Component {...pageProps} />
+      <Footer />
     </SessionProvider>
   );
 };
