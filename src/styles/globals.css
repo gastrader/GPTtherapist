@@ -43,8 +43,8 @@ body {
 }
 
 
-.black_btn {
-    @apply rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm flex items-center justify-center;
+.blue_btn {
+    @apply rounded-2xl  bg-blue-500 py-1.5 px-5 text-white transition-all hover:bg-blue-600 text-center text-sm flex items-center justify-center;
 }
 
 .outline_btn {
