@@ -21,7 +21,7 @@ const Home: NextPage = () => {
         <div className="gradient"/>
       </div>
       <main>
-      <div className="w-full h-full flex items-center justify-center flex-col mt-40 mb-[300px] ">
+      <div className="w-full h-full flex items-center justify-center flex-col mt-40 mb-[200px] ">
         <h1 className="head_text text-center">Your Digital Therapy Companion</h1>
         <h2 className="blue_gradient head_text text-center "> Journey to Wellness Starts Here</h2>
         <p className="desc text-center">
