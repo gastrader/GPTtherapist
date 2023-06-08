@@ -71,3 +71,8 @@ body {
 .blue_gradient {
     @apply bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
 }
+
+
+.bg-hero {
+    background-image: url('/src/assets/images/hero-bg.png');
+}
