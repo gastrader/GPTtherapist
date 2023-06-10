@@ -57,8 +57,8 @@ const Dashboard: NextPage = () => {
                 <meta name="description" content="Therapy on the go" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="flex flex-col w-full gap-2 ">
-                <div className="flex items-center justify-center flex-col  border-black border mx-2">
+            <div className="flex flex-col w-full gap- ">
+                <div className="flex items-center justify-center flex-col  border-black border mx-2 rounded-2xl">
                     <h1 className="head_text text-center ">
                         <Greeting/>
                         <br className="max-md:hidden " />
@@ -67,8 +67,13 @@ const Dashboard: NextPage = () => {
                     <p className="desc text-center">
                         Select a program below:
                     </p>
+                    <div className="flex flex-row gap-2 my-2">
+                    <Link href="/voice" className="outline_btn">Voice-to-Video</Link>
+                    <Link href="/generate" className="outline_btn">Text-to-Video</Link>
+                    <Link href="/chat" className="outline_btn">Text Me</Link>
+                    </div>
                 </div>
-                <div className='flex flex-wrap gap-7 border border-red-500 py-4 items-center justify-center mx-1'>
+                <div className='flex flex-wrap gap-7 py-4 items-center justify-center mx-1'>
                     {dashboard.map((project, index) => (
                         <DashboardCard key={`project-${index}`} index={index} {...project} />
                     ))}

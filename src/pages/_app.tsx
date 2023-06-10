@@ -23,7 +23,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       {showNavBar && <Nav />}
       <Component {...pageProps} />
-      <Footer />
+      {showNavBar && <Footer />}
     </SessionProvider>
   );
 };

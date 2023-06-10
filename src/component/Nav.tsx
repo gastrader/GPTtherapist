@@ -28,9 +28,6 @@ export function Nav() {
                 <ul className="flex gap-2">
                     {isLoggedIn && (
                         <>
-                            <Link href="/voice" className="outline_btn">Talk to a therapist</Link>
-                            <Link href="/generate" className="outline_btn">Type to a therapist</Link>
-                            <Link href="/chat" className="outline_btn">Text Me!</Link>
                             <Link href="/dashboard" className="blue_btn">Let&apos;s Get Started!</Link>
                         </>)}
                 </ul>
