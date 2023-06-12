@@ -5,7 +5,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 body {
-  @apply bg-gray-100;
+  @apply bg-white;
 }
 
 .main {
@@ -75,7 +75,7 @@ body {
 .bg-hero {
   background-image: url("/src/assets/images/hero-bg.png");
 }
-/*
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -152,4 +152,4 @@ body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-} */
+} 
