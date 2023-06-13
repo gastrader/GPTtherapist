@@ -57,8 +57,9 @@ export function AccountForm() {
     text_ai_response?: string;
   }
 
-
-  const { data: rawData, isLoading } = api.chatqueryRouter.queryChat.useQuery<Transcript[]>(
+  const { data: rawData, isLoading } = api.chatqueryRouter.queryChat.useQuery<
+    Transcript[]
+  >(
     // @ts-expect-error The query isn't enabled if submittedValues is undefined, so the query input should always exist
     submittedValues,
     {
@@ -85,7 +86,10 @@ export function AccountForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Type</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select the type of transcript to retrieve" />
@@ -151,23 +155,34 @@ export function AccountForm() {
         </form>
       </Form>
       {submittedValues && (
-      <div className="container rounded mx-auto mt-20 items-center justify-center max-w-[700px]">
-        <div className="flex flex-col h-[600px] bg-gray-100 rounded-xl border border-gray-600">
-          <h1 className="text-center py-3 text-white font-bold text-4xl blue_gradient">THERA CHAT 🤖 </h1>
-          <div className="overflow-y-auto flex-grow p-6">
-            <div className="flex flex-col space-y-4 ">
-              <div className="bg-gray-100 rounded p-4 flex flex-col ">
-                {data?.map((transcript, index) => (
-                  <div key={index} className="bg-gray-100 rounded px-4 flex flex-col mt-4 gap-4 ">
-                    <div className="justify-end text-end bg-gray-200 rounded-xl p-4 text-black max-w-sm self-end">{transcript.text_prompt || transcript.video_prompt}</div>
-                    <div className="justify-start text-start bg-blue-500 rounded-xl p-4 max-w-sm text-white">{transcript.text_ai_response || transcript.video_ai_response}</div>
-                  </div>
-                ))}
+        <div className="container mx-auto mt-20 max-w-[700px] items-center justify-center rounded">
+          <div className="flex h-[600px] flex-col rounded-xl border border-gray-600 bg-gray-100">
+            <h1 className="blue_gradient py-3 text-center text-4xl font-bold text-white">
+              THERA CHAT 🤖{" "}
+            </h1>
+            <div className="flex-grow overflow-y-auto p-6">
+              <div className="flex flex-col space-y-4 ">
+                <div className="flex flex-col rounded bg-gray-100 p-4 ">
+                  {data?.map((transcript, index) => (
+                    <div
+                      key={index}
+                      className="mt-4 flex flex-col gap-4 rounded bg-gray-100 px-4 "
+                    >
+                      <div className="max-w-sm justify-end self-end rounded-xl bg-gray-200 p-4 text-end text-black">
+                        {transcript.text_prompt || transcript.video_prompt}
+                      </div>
+                      <div className="max-w-sm justify-start rounded-xl bg-blue-500 p-4 text-start text-white">
+                        {transcript.text_ai_response ||
+                          transcript.video_ai_response}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>)}
+      )}
     </>
   );
 }
