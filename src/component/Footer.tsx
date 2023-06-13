@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export function Footer() {
   return (
-    <footer className="text-bold flex w-full flex-grow flex-col items-center justify-center">
+    <footer className="text-bold flex w-full flex-col items-center justify-center">
       <Link href="/" className="flex-center flex gap-2">
         <Image
           src="/assets/images/logo.svg"
