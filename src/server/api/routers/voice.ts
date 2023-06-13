@@ -3,10 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-
-
-
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { Configuration, OpenAIApi } from "openai";
@@ -14,12 +10,21 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { env } from "~/env.mjs";
 import fs from 'fs';
 import axios from "axios";
+import AWS from "aws-sdk";
 
 
 const configuration = new Configuration({
     apiKey: env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+
+const s3 = new AWS.S3({
+    credentials: {
+        accessKeyId: env.ACCESS_KEY_ID,
+        secretAccessKey: env.SECRET_ACCESS_KEY,
+    },
+
+})
 
 export const voiceRouter = createTRPCRouter({
     //mutation = insert/delete or modify state of server
@@ -101,7 +106,16 @@ export const voiceRouter = createTRPCRouter({
         const message = chatresponse.data.choices[0]?.message?.content
         console.log("The therapist response is:", message)
 
-        //TO DO: ADD TO DB (const convo line)
+        //ADD TO DB
+        const convo = await ctx.prisma.message.create({
+            data: {
+                video_prompt: transcription,
+                video_ai_response: message,
+                userId: ctx.session.user.id,
+                createdAt: new Date()
+            },
+        });
+        console.log("the convo and convo ID are: ", convo, convo.id)
 
         const post_options = {
             method: 'POST',
@@ -150,6 +164,40 @@ export const voiceRouter = createTRPCRouter({
 
 
         const resultUrl = await pollForResultUrl();
+
+        async function convertmp4tobase64(url: string) {
+            try {
+                const response = await axios.get(url, {
+                    responseType: 'arraybuffer',
+                });
+                const base64 = Buffer.from(response.data, 'binary').toString('base64');
+                return base64
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        convertmp4tobase64(resultUrl)
+            .then(base64Data => {
+                const params = {
+                    Bucket: "gpttherapy",
+                    Body: Buffer.from(base64Data, "base64"),
+                    Key: convo.id,
+                    ContentEncoding: "base64",
+                    ContentType: "video/mp4",
+                };
+                s3.putObject(params, (err, data) => {
+                    if (err) {
+                        console.error(err)
+                    } else {
+                        console.log("base64 logged here... should be added to bucket as well: ", data);
+
+                    }
+                })
+
+            }).catch(error => {
+                console.error(error);
+            })
         
         //TO TEST WITH:
         // const resultUrl = "https://d-id-clips-prod.s3.us-west-2.amazonaws.com/google-oauth2%7C102007001941522101997/clp_vWmcYyrNSUZaFxBNJ2Zxv/amy-jcwCkr1grs.mp4?AWSAccessKeyId=AKIA5CUMPJBIJ7CPKJNP&Expires=1685653651&Signature=sgflUYsL7xavswHmGLmbPKPILMM%3D&X-Amzn-Trace-Id=Root%3D1-6477b713-7de7a8f039537d66031eb286%3BParent%3D0852d48371ffdb93%3BSampled%3D0%3BLineage%3D84e41ec0%3A0"

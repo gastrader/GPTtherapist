@@ -26,7 +26,7 @@ export const userRouter = createTRPCRouter({
 
         
         if (user) {
-            return user.credits as number;
+            return user.credits;
         }
     }),
 });

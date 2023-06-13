@@ -62,21 +62,11 @@ export const generateRouter = createTRPCRouter({
             model: "gpt-3.5-turbo",
             //TODO: fetch users chat history to input here.
             messages: [
-                { "role": "system", "content": "a compassionate therapist, who is interested in learning more and giving actionable but helpful advice. please keep your responses to around 50 words." },
+                { "role": "system", "content": env.OPENAI_PROMPT },
                 { "role": "user", "content": input.prompt }],
         });
         
         const message = chatresponse.data.choices[0]?.message?.content
-
-        //TODO FIX LIOL 
-        const convo = await ctx.prisma.message.create({
-            data: {
-                video_prompt: input.prompt,
-                video_ai_response: message,
-                userId: ctx.session.user.id,
-            },
-        });
-        console.log("the convo and convo ID are: ", convo, convo.id)
 
         const post_options = {
             method: 'POST',
@@ -169,6 +159,15 @@ export const generateRouter = createTRPCRouter({
             console.error(error);
         })
         
+        const convo = await ctx.prisma.message.create({
+            data: {
+                video_prompt: input.prompt,
+                video_ai_response: message,
+                userId: ctx.session.user.id,
+                createdAt: new Date()
+            },
+        });
+        console.log("the convo and convo ID are: ", convo, convo.id)
 
         return{
             aiMessage: resultUrl

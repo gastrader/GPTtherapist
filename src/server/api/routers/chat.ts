@@ -61,6 +61,7 @@ export const chatRouter = createTRPCRouter({
                 text_prompt: input,
                 text_ai_response: message,
                 userId: ctx.session.user.id,
+                createdAt: new Date()
             },
         });
         console.log("the convo and convo ID are: ", convo, convo.id)
