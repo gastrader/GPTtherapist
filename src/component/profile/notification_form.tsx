@@ -23,7 +23,7 @@ import { useEffect } from "react"
 const notificationsFormSchema = z.object({
     communication_emails: z.boolean().default(false).optional(),
     marketing_emails: z.boolean().default(false).optional(),
-    security_emails: z.boolean(),
+    security_emails: z.boolean().default(true),
 })
 
 type NotificationsFormValues = z.infer<typeof notificationsFormSchema>
@@ -46,21 +46,16 @@ export function NotificationForm() {
     
     //This is running on every time the component is mounted or something?
     const notificationQuery = api.notificationequeryRouter.notiQuery.useQuery();
-    // console.log("The comms email is: ", notificationQuery.data?.communication_emails)
-    // console.log("The marketing email is: ", notificationQuery.data?.marketing_emails)
-
-    
-    const { setValue } = form;
 
     useEffect(() => {
         if (notificationQuery.isSuccess) {
             const data = notificationQuery.data;
-            setValue("communication_emails", data?.communication_emails as boolean);
-            setValue("marketing_emails", data?.marketing_emails as boolean);
-            setValue("security_emails", true )
+            form.setValue("communication_emails", data?.communication_emails as boolean);
+            form.setValue("marketing_emails", data?.marketing_emails as boolean);
+            form.setValue("security_emails", true )
         }
-    },[]);
-    //THIS ONLY WORKS WHEN THE DEPENDANCY ARRAY IS EMPTY
+    }, [notificationQuery.isSuccess, notificationQuery.data, form]);
+    //THIS ONLY WORKS WHEN THE DEPENDANCY ARRAY IS EMPTY NVM IDK
 
     function onSubmit(data: NotificationsFormValues) {
         console.log("we are in submit function", data)
