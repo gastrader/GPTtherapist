@@ -51,11 +51,11 @@ useEffect(() => {
     }
 }, [chatLog]);
 
-const resetChat = () => {
-    setChatLog([
-        { type: "bot", message: "Start a new chat!" },
-    ]);
-};
+// const resetChat = () => {
+//     setChatLog([
+//         { type: "bot", message: "Start a new chat!" },
+//     ]);
+// };
 
     return (
         <>
@@ -66,11 +66,11 @@ const resetChat = () => {
             </Head>
             
             <div className="container rounded mx-auto mt-20 items-center justify-center max-w-[700px]">
-                <div className="absolute top-20 left-20">
+                {/* <div className="absolute top-20 left-20">
                     <button className="rounded-xl bg-blue-300 px-4 py-1 outline outline-black hover:bg-blue-500" onClick={resetChat}>
                         New Chat
                     </button>
-                </div>
+                </div> */}
                 <div className="flex flex-col h-[600px] bg-gray-100 rounded-xl border border-gray-600">
                     <h1 className="text-center py-3 text-white font-bold text-4xl blue_gradient">THERA CHAT 🤖 </h1>
                     <div className="overflow-y-auto flex-grow p-6" ref={chatMessagesRef}>
