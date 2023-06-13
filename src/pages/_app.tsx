@@ -9,21 +9,20 @@ import { Nav } from "~/component/Nav";
 import { useRouter } from "next/router";
 import { Footer } from "~/component/Footer";
 
-
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
-
 }) => {
-
   const router = useRouter();
-  const showNavBar = !router.pathname.includes('/payment')
+  const showNavBar = !router.pathname.includes("/payment");
 
   return (
     <SessionProvider session={session}>
-      {showNavBar && <Nav />}
-      <Component {...pageProps} />
-      {showNavBar && <Footer />}
+      <div className="relative flex min-h-screen flex-col">
+        {showNavBar && <Nav />}
+        <Component {...pageProps} />
+        {showNavBar && <Footer />}
+      </div>
     </SessionProvider>
   );
 };
