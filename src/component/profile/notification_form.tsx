@@ -31,13 +31,10 @@ type NotificationsFormValues = z.infer<typeof notificationsFormSchema>
 
 export function NotificationForm() {
 
-    
-
     const form = useForm<NotificationsFormValues>({
         resolver: zodResolver(notificationsFormSchema),
     })
     
-
     const updateNotifications = api.notificationUpdate.notificationUpdate.useMutation({
         onSuccess(data: any) {
             console.log("mutation finished: ", data)
