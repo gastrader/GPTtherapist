@@ -25,6 +25,19 @@ const config = {
         fixStyle: "inline-type-imports",
       },
     ],
+    "@typescript-eslint/no-unsafe-assignments": ["off"],
+    "@typescript-eslint/no-unsafe-call": ["off"],
+    "@typescript-eslint/no-unsafe-member-access": ["off"],
+    // https://typescript-eslint.io/rules/no-misused-promises/#checksvoidreturn
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: {
+          arguments: false,
+          attributes: false,
+        },
+      },
+    ],
   },
 };
 
