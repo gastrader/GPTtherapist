@@ -13,10 +13,6 @@ const sidebarNavItems = [
         href: "/profile/account",
     },
     {
-        title: "Display",
-        href: "/profile/display",
-    },
-    {
         title: "Notifications",
         href: "/profile/notifications",
     },

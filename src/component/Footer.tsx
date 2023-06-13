@@ -5,7 +5,7 @@ import Image from "next/image"
 export function Footer() {
 
     return (
-        <div className="w-full items-center justify-center text-bold flex flex-col">
+        <footer className="w-full items-center justify-center text-bold flex flex-col bottom-0 flex-grow">
             <Link href="/" className="flex gap-2 flex-center">
                 <Image src="/assets/images/logo.svg" alt="logo" width="40" height="40" className="object-contain" />
                 
@@ -23,7 +23,7 @@ export function Footer() {
             <p className="flex gap-1 pb-4">Need Help? Email 
                 <a href="mailto:support@gpttherapy.com" className="underline"> support@gpttherapy.com</a>
             </p>
-            </div>
+            </footer>
 
     )
 }

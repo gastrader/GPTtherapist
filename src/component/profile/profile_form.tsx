@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 "use client"
@@ -33,6 +34,7 @@ import {
     FormMessage,
 } from "../ui/form"
 import { api } from "~/utils/api"
+import { useEffect } from "react"
 
 const gender = [
     { label: "Male", value: "ma" },
@@ -70,22 +72,32 @@ const accountFormSchema = z.object({
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
 export function ProfileForm() {
-    const queryResult = api.profilequeryRouter.queryName.useQuery(undefined, {waitFor: 'all'});
-
-    // This can come from your database or API.
-    const defaultValues: Partial<AccountFormValues> = {
-        name: queryResult?.data?.name || "Your Name",
-        age: queryResult?.data?.age as number || undefined,
-        gender: queryResult?.data?.gender as string || "Male",
-    }
+    
+    const queryResult = api.profilequeryRouter.queryName.useQuery();
+    // REPLACED BY USING USE EFFECT TO SET
+    // const defaultValues: Partial<AccountFormValues> = {
+    //     name: queryResult?.data?.name || "Your Name",
+    //     age: queryResult?.data?.age as number || undefined,
+    //     gender: queryResult?.data?.gender as string || "Male",
+    // }
 
     const form = useForm<AccountFormValues>({
         resolver: zodResolver(accountFormSchema),
-        defaultValues,
     })
+    const { setValue } = form;
+
+    useEffect(() => {
+        if (queryResult.isSuccess) {
+            const data = queryResult.data;
+            setValue('name', data?.name || '');
+            setValue('age', data?.age as number || NaN);
+            setValue('gender', data?.gender as string || '');
+        }
+    }, [queryResult.isSuccess, queryResult.data, setValue]);
+    
 
     const updateName = api.profile.updateName.useMutation({
-        onSuccess(data){
+        onSuccess(data: any){
             console.log("mutation finished: ", data)
         }
     });

@@ -3,10 +3,11 @@ import { userRouter } from "~/server/api/routers/user";
 import { generateRouter } from "~/server/api/routers/generate";
 import { checkoutRouter } from "~/server/api/routers/checkout";
 import { voiceRouter } from "~/server/api/routers/voice";
+import { chatRouter } from "~/server/api/routers/chat";
 import { profileRouter } from "~/server/api/routers/profileUpdate";
 import { profilequeryRouter } from "~/server/api/routers/profileQuery";
-
-import { chatRouter } from "~/server/api/routers/chat";
+import { notificationRouter } from "./routers/notificationUpdate";
+import { notificationequeryRouter } from "./routers/notificationQuery";
 /**
  * This is the primary router for your server.
  *
@@ -20,6 +21,8 @@ export const appRouter = createTRPCRouter({
   voice: voiceRouter,
   profile: profileRouter,
   profilequeryRouter: profilequeryRouter,
+  notificationUpdate: notificationRouter,
+  notificationequeryRouter: notificationequeryRouter,
 });
 
 // export type definition of API
