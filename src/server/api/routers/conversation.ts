@@ -5,10 +5,40 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { getChatResponse, s3PutBase64 } from "../../utils";
 import { createAIVideoResponse } from "../../createAIVideoResponse";
 
-const CONVERSATION_CREATE_CREDITS = 10;
-const CONVERSATION_REPLY_CREDITS = 8;
+const CONVERSATION_CREATE_CREDITS = -1;
+const CONVERSATION_REPLY_CREDITS = -1;
 
 export const conversationRouter = createTRPCRouter({
+  getConversation: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      if (!ctx.session.user.id) return;
+
+      const { session } = ctx;
+
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: session.user.id,
+        },
+      });
+
+      if (!user) return;
+
+      const conversation = await ctx.prisma.conversation.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          messages: true,
+        },
+      });
+
+      return conversation;
+    }),
   createConversation: protectedProcedure
     .input(
       z.object({
