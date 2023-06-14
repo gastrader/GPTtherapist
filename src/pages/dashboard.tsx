@@ -47,21 +47,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
 
 const Dashboard: NextPage = () => {
 
-    // const result = api.convoRouter.newConversation.useMutation();
-    // result.mutate()
-    const router = useRouter();
-    const newConvoMutation = api.convoRouter.newConversation.useMutation();
 
-    const handleClick = async() => {
-        // console.log("IN THE HANDLE CLICKER-------------------")
-        const result = await newConvoMutation.mutateAsync();
-        if (result.conversationId){
-            // console.log("We got an ID of from the BE: ", result.conversationId)
-            void router.push('/chat')
-        } else {
-            console.log(Error)
-        }
-    }
 
     return (
         <div>
@@ -82,7 +68,7 @@ const Dashboard: NextPage = () => {
                     </p>
                     <div className="flex flex-row gap-2 my-2">
                     {/* voice, generate, chat */}
-                    <button onClick={handleClick} className="outline_btn">New Chat</button>
+                    <Link  href="/conversations/new"className="outline_btn">New Chat</Link>
                     <Link href="/existing" className="outline_btn">Existing Chats</Link>
                     </div>
                 </div>
