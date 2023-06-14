@@ -13,7 +13,7 @@ export const conversationRouter = createTRPCRouter({
     .input(
       z.object({
         message: z.string(),
-        conversationType: z.enum(["TEXT", "VIDEO"]).default("VIDEO"),
+        conversationType: z.enum(["TEXT", "VIDEO"]).default("TEXT"),
       })
     )
     .mutation(async ({ ctx, input }) => {
