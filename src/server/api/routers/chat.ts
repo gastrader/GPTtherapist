@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -55,13 +56,29 @@ export const chatRouter = createTRPCRouter({
         const message = chatresponse.data.choices[0]?.message?.content
         console.log("response is: ", message)
 
+        const activeConversation = await ctx.prisma.conversation.findFirst({
+            where: {
+                userId: ctx.session.user.id,
+                status: 'active'
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+        });
+        if (!activeConversation) {
+            throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'No active conversation found.',
+            });
+        }
         
         const convo = await ctx.prisma.message.create({
             data: {
                 text_prompt: input,
                 text_ai_response: message,
                 userId: ctx.session.user.id,
-                createdAt: new Date()
+                createdAt: new Date(),
+                conversationId: activeConversation.id
             },
         });
         console.log("the convo and convo ID are: ", convo, convo.id)

@@ -2,10 +2,13 @@
 
 import { type NextPage } from "next";
 import Head from "next/head";
-import { string } from "zod";
 import Greeting from "~/component/Greeting";
 import { dashboard } from "../constants";
 import Link from "next/link";
+import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import { el } from "date-fns/locale";
+
 
 
 interface DashboardCardProps {
@@ -30,15 +33,9 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
                         onClick={() => window.open(source_code_link, "_blank")}
                         className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
                     >
-                        <img
-                            src="arrow"
-                            alt='source code'
-                            className='w-1/2 h-1/2 object-contain'
-                        />
                     </div>
                 </div>
             </div>
-
             <div className='mt-5'>
                 <h3 className='text-black font-bold text-[24px]'>{name}</h3>
                 <p className='mt-2 text-secondary text-[14px] pb-4'>{description}</p>
@@ -49,6 +46,22 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
 }
 
 const Dashboard: NextPage = () => {
+
+    // const result = api.convoRouter.newConversation.useMutation();
+    // result.mutate()
+    const router = useRouter();
+    const newConvoMutation = api.convoRouter.newConversation.useMutation();
+
+    const handleClick = async() => {
+        // console.log("IN THE HANDLE CLICKER-------------------")
+        const result = await newConvoMutation.mutateAsync();
+        if (result.conversationId){
+            // console.log("We got an ID of from the BE: ", result.conversationId)
+            void router.push('/chat')
+        } else {
+            console.log(Error)
+        }
+    }
 
     return (
         <div>
@@ -68,9 +81,9 @@ const Dashboard: NextPage = () => {
                         Select a program below:
                     </p>
                     <div className="flex flex-row gap-2 my-2">
-                    <Link href="/voice" className="outline_btn">Voice-to-Video</Link>
-                    <Link href="/generate" className="outline_btn">Text-to-Video</Link>
-                    <Link href="/chat" className="outline_btn">Text Me</Link>
+                    {/* voice, generate, chat */}
+                    <button onClick={handleClick} className="outline_btn">New Chat</button>
+                    <Link href="/existing" className="outline_btn">Existing Chats</Link>
                     </div>
                 </div>
                 <div className='flex flex-wrap gap-7 py-4 items-center justify-center mx-1'>
