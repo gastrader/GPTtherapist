@@ -168,8 +168,11 @@ export const conversationRouter = createTRPCRouter({
           where: {
             id: input.conversationId,
           },
+          include: {
+            messages: true,
+          },
         });
-
+        
         if (!conversation) throw new TRPCError({ code: "BAD_REQUEST" });
 
         if (conversation.mode === "VIDEO") {
@@ -203,8 +206,13 @@ export const conversationRouter = createTRPCRouter({
 
           return message;
         }
-
-        const aiResponse = await getChatResponse(input.message);
+        const simplifiedConvo = conversation.messages.map(obj=> ({
+          assistant: obj.aiResponseText,
+          user: obj.prompt,
+        }))
+        const conversationString = simplifiedConvo.map(entry => `User: '${entry.user}', Assistant: '${entry.assistant}'`).join(' ')
+        const fullMessage = `This is the context of our chat where you are the assistant and I am the user: '${conversationString}'. My new message is: '${input.message}'.`
+        const aiResponse = await getChatResponse(fullMessage);
         const message = await ctx.prisma.message.create({
           data: {
             prompt: input.message,

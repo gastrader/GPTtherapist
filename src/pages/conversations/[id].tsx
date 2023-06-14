@@ -36,7 +36,6 @@ export default function ConversationIdPage() {
 function ExistingConversation({ id }: { id: string }) {
   const queryContext = api.useContext();
   const { data, isLoading } = api.conversation.getConversation.useQuery({ id });
-
   const { mutateAsync } = api.conversation.updateConversation.useMutation();
 
   const [message, setMessage] = useState("");

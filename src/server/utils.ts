@@ -2,6 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import { env } from "../env.mjs";
 import axios from "axios";
 import AWS from "aws-sdk";
+import { api } from "~/utils/api";
 const configuration = new Configuration({
   apiKey: env.OPENAI_API_KEY,
 });
@@ -17,7 +18,7 @@ export async function getChatResponse(message: string): Promise<string> {
       { role: "user", content: message },
     ],
   });
-
+  
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return res.data.choices[0]?.message?.content as string;
 }
