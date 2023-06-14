@@ -71,8 +71,9 @@ model Conversation {
     id        String    @id @default(cuid())
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
+    subject   String
+    mode      String // text | video. Sqlite doesnt support enums but this can be hard coded for now
     messages  Message[]
-    status    String    @default("active")
     user      User      @relation(fields: [userId], references: [id])
     userId    String
 }
