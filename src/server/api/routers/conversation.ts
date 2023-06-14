@@ -106,7 +106,7 @@ export const conversationRouter = createTRPCRouter({
 
           const bucketKey = `${session.user.id}-${conversation.id}-${message.id}`;
 
-          s3PutBase64(base64, bucketKey);
+          s3PutBase64(Buffer.from(base64, "base64"), bucketKey);
 
           return message;
         }
@@ -199,7 +199,7 @@ export const conversationRouter = createTRPCRouter({
 
           const bucketKey = `${session.user.id}-${conversation.id}-${message.id}`;
 
-          s3PutBase64(base64, bucketKey);
+          s3PutBase64(Buffer.from(base64, "base64"), bucketKey);
 
           return message;
         }
