@@ -34,7 +34,24 @@ export default function ConversationIdPage() {
 }
 
 function ExistingConversation({ id }: { id: string }) {
+  const queryContext = api.useContext();
   const { data, isLoading } = api.conversation.getConversation.useQuery({ id });
+
+  const { mutateAsync } = api.conversation.updateConversation.useMutation();
+
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async () => {
+    const res = await mutateAsync(
+      { conversationId: id, message },
+      {
+        onSuccess: () => {
+          void queryContext.conversation.getConversation.invalidate();
+          setMessage("");
+        },
+      }
+    );
+  };
 
   if (isLoading || !data) {
     return <div>loading conversation</div>;
@@ -45,9 +62,14 @@ function ExistingConversation({ id }: { id: string }) {
       {data.messages.map((msg) => (
         <div key={msg.id}>
           <span>you: {msg.prompt}</span>
-          <span>{msg.aiResponseText}</span>
+          <br />
+          <span>ai:{msg.aiResponseText}</span>
         </div>
       ))}
+      <div>
+        <Input value={message} onChange={(e) => setMessage(e.target.value)} />
+        <Button onClick={handleSubmit}>submit</Button>
+      </div>
     </div>
   );
 }
