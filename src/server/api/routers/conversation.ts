@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { s3PutBase64 } from "../../utils";
+import { getChatResponse, s3PutBase64 } from "../../utils";
 import { createAIVideoResponse } from "../../createAIVideoResponse";
 
 const CONVERSATION_CREATE_CREDITS = 10;
@@ -13,6 +13,7 @@ export const conversationRouter = createTRPCRouter({
     .input(
       z.object({
         message: z.string(),
+        conversationType: z.enum(["TEXT", "VIDEO"]).default("VIDEO"),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -36,12 +37,9 @@ export const conversationRouter = createTRPCRouter({
       }
 
       try {
-        const { aiResponse, base64, clipId, resultUrl } =
-          await createAIVideoResponse(input.message);
-
         const conversation = await ctx.prisma.conversation.create({
           data: {
-            mode: "video",
+            mode: input.conversationType,
             subject: "default_subject_message",
             user: {
               connect: {
@@ -51,11 +49,43 @@ export const conversationRouter = createTRPCRouter({
           },
         });
 
+        if (input.conversationType === "VIDEO") {
+          const { aiResponse, base64, clipId, resultUrl } =
+            await createAIVideoResponse(input.message);
+
+          const message = await ctx.prisma.message.create({
+            data: {
+              prompt: input.message,
+              aiResponseText: aiResponse,
+              aiResponseUrl: resultUrl, // this should be the bucket url ideally
+              user: {
+                connect: {
+                  id: session.user.id,
+                },
+              },
+              conversation: {
+                connect: {
+                  id: conversation.id,
+                },
+              },
+            },
+            include: {
+              conversation: true,
+            },
+          });
+
+          const bucketKey = `${session.user.id}-${conversation.id}-${message.id}`;
+
+          s3PutBase64(base64, bucketKey);
+
+          return message;
+        }
+
+        const aiResponse = await getChatResponse(input.message);
         const message = await ctx.prisma.message.create({
           data: {
             prompt: input.message,
             aiResponseText: aiResponse,
-            aiResponseUrl: resultUrl, // this should be the bucket url
             user: {
               connect: {
                 id: session.user.id,
@@ -71,11 +101,6 @@ export const conversationRouter = createTRPCRouter({
             conversation: true,
           },
         });
-
-        const bucketKey = `${session.user.id}-${conversation.id}-${message.id}`;
-
-        s3PutBase64(base64, bucketKey);
-
         return message;
       } catch (e) {
         console.log(e);
