@@ -9,7 +9,7 @@ import { profilequeryRouter } from "~/server/api/routers/profileQuery";
 import { notificationRouter } from "./routers/notificationUpdate";
 import { notificationequeryRouter } from "./routers/notificationQuery";
 import { chatqueryRouter } from "./routers/chatQuery";
-import { convoRouter } from "./routers/newConvo";
+import { conversationRouter } from "./routers/conversation";
 /**
  * This is the primary router for your server.
  *
@@ -26,7 +26,7 @@ export const appRouter = createTRPCRouter({
   notificationUpdate: notificationRouter,
   notificationequeryRouter: notificationequeryRouter,
   chatqueryRouter: chatqueryRouter,
-  convoRouter: convoRouter,
+  conversation: conversationRouter,
 });
 
 // export type definition of API
