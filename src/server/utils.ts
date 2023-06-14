@@ -72,7 +72,7 @@ const defaultBucketParams = {
   ContentEncoding: "base64",
   ContentType: "video/mp4",
 };
-export function s3PutBase64(body: string, key: string) {
+export function s3PutBase64(body: string | Buffer, key: string) {
   s3.putObject(
     { ...defaultBucketParams, Body: body, Key: key },
     (err, data) => {
