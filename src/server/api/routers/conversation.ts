@@ -194,11 +194,11 @@ export const conversationRouter = createTRPCRouter({
       
       try {
         //FETCH USER DATA FOR BIO.
-        const user = await ctx.prisma.user.findUnique({
-        where: {
-          id: session.user.id,
-        },
-      });
+        // const user = await ctx.prisma.user.findUnique({
+        // where: {
+        //   id: session.user.id,
+        // },
+      // });
         
         const conversation = await ctx.prisma.conversation.findUnique({
           where: {
@@ -246,9 +246,9 @@ export const conversationRouter = createTRPCRouter({
           assistant: obj.aiResponseText,
           user: obj.prompt,
         }))
-        const bio2: string = user?.bio || ""
+        // const bio2: string = user?.bio || ""
         const conversationString = simplifiedConvo.map(entry => `User: '${entry.user}', Assistant: '${entry.assistant}'`).join(' ')
-        const fullMessage = `A quick background bio about myself is: '${bio2}'. If you take information from my bio, please be clear. This is the context of our chat where you are the assistant and I am the user: '${conversationString}'. My new message is: '${input.message}'.`
+        const fullMessage = `This is the context of our chat so far where you are the assistant and I am the user: '${conversationString}'. My new message is: '${input.message}'.`
         const aiResponse = await getChatResponse(fullMessage);
         const message = await ctx.prisma.message.create({
           data: {

@@ -127,6 +127,7 @@ function ExistingChatbox({ id }: { id: string }) {
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     setLoading(true);
+    setMessage("")
     
       // Optimistically update the chat log with the new message
     data?.messages.push({
@@ -145,7 +146,6 @@ function ExistingChatbox({ id }: { id: string }) {
       {
         onSuccess: () => {
           void queryContext.conversation.getConversation.invalidate();
-          setMessage("");
           setLoading(false);
         },
       }
