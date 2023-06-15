@@ -39,12 +39,13 @@ export default function Chatbox() {
     event.preventDefault();
     setLoading(true)
     setChatLog(prevChatLog => [...prevChatLog, { type: 'user', message: inputValue }]);
+    setInputValue("")
     const res = await mutateAsync({ message: inputValue });
 
     if (res) {
       await router.replace(`/conversations/${res.conversation.id}`);
     }
-    setInputValue("");
+    
     
   };
   useEffect(() => {

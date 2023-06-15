@@ -17,7 +17,7 @@ export const conversationRouter = createTRPCRouter({
     const user = await ctx.prisma.user.findUnique({
       where: {
         id: session.user.id,
-      },
+      }
     });
 
     if (!user) return;
@@ -25,6 +25,9 @@ export const conversationRouter = createTRPCRouter({
     const conversations = await ctx.prisma.conversation.findMany({
       where: {
         userId: user.id
+      },
+      orderBy: {
+        updatedAt: 'desc',
       },
     });
 
