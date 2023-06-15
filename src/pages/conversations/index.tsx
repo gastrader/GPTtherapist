@@ -1,13 +1,8 @@
-import { ScrollArea, ScrollBar } from "../../component/ui/scroll-area"
 import { Separator } from "../../component/ui/separator"
 import { Sidebar } from "../../component/conversations/Sidebar"
-
-import { PlusCircle } from "lucide-react"
-import { Button } from "../../component/ui/button"
-
 import { PageContainer } from "../../component/PageContainer";
 
-export default function ConversationIdPage() {
+export default function ConversationPage() {
 
     return(
         <PageContainer
@@ -20,11 +15,11 @@ export default function ConversationIdPage() {
                             <Sidebar className="hidden lg:block" playlists={[]} />
                             <div className="col-span-4 flex">
                                 <Separator orientation="vertical" />
-                                <div className=" bg-blue-50 w-full h-full mx-10">
-                                    <div>
-                                        INSERT CHAT IN HERE
+                                <div className=" w-full h-full mx-10">
+                                    <div className="h-full flex items-center justify-center align-middle text-2xl font-semibold tracking-tight">
+                                        <p>Please select an option</p>
                                     </div>
-                            </div>
+                                </div>
                             </div>
                         </div>
                     </div>

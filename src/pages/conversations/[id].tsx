@@ -1,74 +1,31 @@
-import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
-import { api } from "../../utils/api";
-import { Input } from "../../component/Input";
-import { Button } from "../../component/ui/button";
-import { useState } from "react";
+
+import Chatbox from "~/component/conversations/Chatbox";
+import { Separator } from "~/component/ui/separator";
+import { Sidebar } from "~/component/conversations/Sidebar";
+import { PageContainer } from "~/component/PageContainer";
 
 export default function ConversationIdPage() {
-  const router = useRouter();
-  const { mutateAsync } = api.conversation.createConversation.useMutation();
-
-  const [message, setMessage] = useState("");
-
-  const conversationId = router.query.id;
-
-  const handleSubmit = async () => {
-    const res = await mutateAsync({ message });
-
-    if (res) {
-      await router.replace(`/conversations/${res.conversation.id}`);
-    }
-  };
-
-  if (conversationId === "new") {
     return (
-      <div>
-        <Input value={message} onChange={(e) => setMessage(e.target.value)} />
-        <Button onClick={handleSubmit}>submit</Button>
-      </div>
-    );
-  }
-
-  return <ExistingConversation id={conversationId as string} />;
-}
-
-function ExistingConversation({ id }: { id: string }) {
-  const queryContext = api.useContext();
-  const { data, isLoading } = api.conversation.getConversation.useQuery({ id });
-  const { mutateAsync } = api.conversation.updateConversation.useMutation();
-
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = async () => {
-    const res = await mutateAsync(
-      { conversationId: id, message },
-      {
-        onSuccess: () => {
-          void queryContext.conversation.getConversation.invalidate();
-          setMessage("");
-        },
-      }
-    );
-  };
-
-  if (isLoading || !data) {
-    return <div>loading conversation</div>;
-  }
-
-  return (
-    <div>
-      {data.messages.map((msg) => (
-        <div key={msg.id}>
-          <span>you: {msg.prompt}</span>
-          <br />
-          <span>ai:{msg.aiResponseText}</span>
+      <PageContainer
+        title="Conversations"
+        description="Interested in having a conversation with an AI empowered therapist?">
+        <div className="hidden md:block">
+          <div className="border-t">
+            <div className="bg-background">
+              <div className="grid lg:grid-cols-5">
+                <Sidebar className="hidden lg:block" playlists={[]} />
+                <div className="col-span-4 flex">
+                  <Separator orientation="vertical" />
+                  <div className=" w-full h-full mx-10">
+                    <Chatbox />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      ))}
-      <div>
-        <Input value={message} onChange={(e) => setMessage(e.target.value)} />
-        <Button onClick={handleSubmit}>submit</Button>
-      </div>
-    </div>
-  );
+      </PageContainer>
+  )
 }
+
+

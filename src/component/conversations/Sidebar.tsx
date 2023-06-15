@@ -1,18 +1,18 @@
 import {
-    LayoutGrid,
     ScrollText,
-    ListMusic,
     Mic,
     Pencil,
     CloudOff,
     List,
-    MessageCircle,
-    MessageSquare
+    MessageSquare,
+    Coins
 } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 import { Button } from "../ui/button"
 import { ScrollArea } from "../ui/scroll-area"
+import Link from "next/link"
+import { useBuyCredits } from "../../hooks/useBuyCredits";
 
 type Playlist = (typeof conversations)[number]
 
@@ -32,6 +32,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Sidebar({ className }: SidebarProps) {
+    const { buyCredits } = useBuyCredits();
     return (
         <div className={cn("pb-12", className)}>
             <div className="space-y-4 py-4">
@@ -40,13 +41,12 @@ export function Sidebar({ className }: SidebarProps) {
                         Start A New Conversation
                     </h2>
                     <div className="space-y-1">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="w-full justify-start"
-                        >
-                            <ScrollText className="mr-2 h-4 w-4" />
-                            Text Me
+
+                        <Button asChild variant="ghost" size="sm" className="w-full justify-start">
+                            <Link href="/conversations/new">
+                                <ScrollText className="mr-2 h-4 w-4" />
+                                Text Me
+                            </Link>
                         </Button>
                         <Button variant="ghost" size="sm" className="w-full justify-start">
                             <Mic className="mr-2 h-4 w-4" />
@@ -92,7 +92,14 @@ export function Sidebar({ className }: SidebarProps) {
                             ))}
                         </div>
                     </ScrollArea>
+
                 </div>
+                <Button variant="secondary" size="lg" className="w-auto mx-auto flex items-center justify-center text-sm" onClick={() => {
+                    buyCredits().catch(console.error)
+                }}>
+                    <Coins className="mr-2 h-4 w-4" />
+                    Buy Credits
+                </Button>
             </div>
         </div>
     )

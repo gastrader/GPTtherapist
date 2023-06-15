@@ -68,7 +68,7 @@ const Dashboard: NextPage = () => {
                     </p>
                     <div className="flex flex-row gap-2 my-2">
                     {/* voice, generate, chat */}
-                    <Link  href="/conversations/new"className="outline_btn">New Chat</Link>
+                    <Link  href="/conversations/"className="outline_btn">New Chat</Link>
                     <Link href="/existing" className="outline_btn">Existing Chats</Link>
                     </div>
                 </div>
