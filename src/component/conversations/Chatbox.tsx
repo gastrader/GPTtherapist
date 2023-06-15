@@ -45,7 +45,7 @@ export default function Chatbox() {
     if (res) {
       await router.replace(`/conversations/${res.conversation.id}`);
     }
-    
+    setLoading(false)
     
   };
   useEffect(() => {
@@ -58,6 +58,7 @@ export default function Chatbox() {
     // Clean up the subscription on unmount
     return () => {
       router.events.off('routeChangeStart', handleRouteChange)
+      setLoading(false)
     }
   }, []);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { TRPCError } from "@trpc/server";
@@ -136,8 +137,10 @@ export const conversationRouter = createTRPCRouter({
 
           return message;
         }
-
-        const aiResponse = await getChatResponse(input.message);
+        
+        const bio = user.bio || ""
+        const updatedMessage = `A quick background bio about myself is: '${bio}'. If you get information from my bio please be clear. My new message is: '${input.message}'.`
+        const aiResponse = await getChatResponse(updatedMessage);
         const message = await ctx.prisma.message.create({
           data: {
             prompt: input.message,
@@ -245,7 +248,7 @@ export const conversationRouter = createTRPCRouter({
         }))
         const bio2: string = user?.bio || ""
         const conversationString = simplifiedConvo.map(entry => `User: '${entry.user}', Assistant: '${entry.assistant}'`).join(' ')
-        const fullMessage = `A quick background about myself is: '${bio2}'.This is the context of our chat where you are the assistant and I am the user: '${conversationString}'. My new message is: '${input.message}'.`
+        const fullMessage = `A quick background bio about myself is: '${bio2}'. If you take information from my bio, please be clear. This is the context of our chat where you are the assistant and I am the user: '${conversationString}'. My new message is: '${input.message}'.`
         const aiResponse = await getChatResponse(fullMessage);
         const message = await ctx.prisma.message.create({
           data: {
