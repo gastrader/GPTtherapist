@@ -13,6 +13,7 @@ export const profilequeryRouter = createTRPCRouter({
                 name: true,
                 age: true,
                 gender: true,
+                bio: true,
             }
         })
         return name;

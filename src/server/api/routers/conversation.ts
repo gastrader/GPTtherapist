@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -186,8 +188,15 @@ export const conversationRouter = createTRPCRouter({
           message: `You do not have enough credits. Needed: `,
         });
       }
-
+      
       try {
+        //FETCH USER DATA FOR BIO.
+        const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: session.user.id,
+        },
+      });
+        
         const conversation = await ctx.prisma.conversation.findUnique({
           where: {
             id: input.conversationId,
@@ -234,8 +243,9 @@ export const conversationRouter = createTRPCRouter({
           assistant: obj.aiResponseText,
           user: obj.prompt,
         }))
+        const bio2: string = user?.bio || ""
         const conversationString = simplifiedConvo.map(entry => `User: '${entry.user}', Assistant: '${entry.assistant}'`).join(' ')
-        const fullMessage = `This is the context of our chat where you are the assistant and I am the user: '${conversationString}'. My new message is: '${input.message}'.`
+        const fullMessage = `A quick background about myself is: '${bio2}'.This is the context of our chat where you are the assistant and I am the user: '${conversationString}'. My new message is: '${input.message}'.`
         const aiResponse = await getChatResponse(fullMessage);
         const message = await ctx.prisma.message.create({
           data: {

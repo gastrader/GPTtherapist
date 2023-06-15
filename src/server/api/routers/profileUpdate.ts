@@ -9,7 +9,8 @@ export const profileRouter = createTRPCRouter({
         z.object({
             name: z.string(),
             age: z.number(),
-            gender: z.string()
+            gender: z.string(),
+            bio: z.string(),
         })
     ).mutation(async ({ ctx, input }) => {
         console.log("USER INPUT:", input.name);
@@ -28,6 +29,9 @@ export const profileRouter = createTRPCRouter({
                 },
                 gender:{
                     set: input.gender
+                },
+                bio:{
+                    set: input.bio
                 }
             }
         });

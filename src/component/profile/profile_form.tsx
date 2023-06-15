@@ -35,6 +35,7 @@ import {
 } from "../ui/form"
 import { api } from "~/utils/api"
 import { useEffect } from "react"
+import { Textarea } from "../ui/textarea"
 
 const gender = [
     { label: "Male", value: "ma" },
@@ -66,7 +67,8 @@ const accountFormSchema = z.object({
         .transform((value) => parseInt(value, 10)),
     gender: z.string({
         required_error: "Please select a gender.",
-    })
+    }),
+    bio: z.string().max(160).min(4),
 })
 
 type AccountFormValues = z.infer<typeof accountFormSchema>
@@ -74,12 +76,7 @@ type AccountFormValues = z.infer<typeof accountFormSchema>
 export function ProfileForm() {
     
     const queryResult = api.profilequeryRouter.queryName.useQuery();
-    // REPLACED BY USING USE EFFECT TO SET
-    // const defaultValues: Partial<AccountFormValues> = {
-    //     name: queryResult?.data?.name || "Your Name",
-    //     age: queryResult?.data?.age as number || undefined,
-    //     gender: queryResult?.data?.gender as string || "Male",
-    // }
+
 
     const form = useForm<AccountFormValues>({
         resolver: zodResolver(accountFormSchema),
@@ -91,6 +88,7 @@ export function ProfileForm() {
             const data = queryResult.data;
             setValue('name', data?.name || '');
             setValue('age', data?.age as number || NaN);
+            setValue('bio', data?.bio as string || '' )
             setValue('gender', data?.gender as string || '');
         }
     }, [queryResult.isSuccess, queryResult.data, setValue]);
@@ -107,7 +105,8 @@ export function ProfileForm() {
         updateName.mutate({ 
             name:data.name,
             age:data.age,
-            gender:data.gender
+            gender:data.gender,
+            bio:data.bio,
         })
     }
 
@@ -158,6 +157,26 @@ export function ProfileForm() {
                         </FormItem>
                     )}
                 />
+             <FormField
+          control={form.control}
+          name="bio"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bio</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Tell us a little bit about yourself"
+                  className="resize-none"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                This bio will be used as context for all future conversations with AI Therapists. Include any information here that you do not want to repeat.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
             <FormField
                 control={form.control}
                 name="gender"
