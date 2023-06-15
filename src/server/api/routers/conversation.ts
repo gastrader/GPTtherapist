@@ -9,6 +9,27 @@ const CONVERSATION_CREATE_CREDITS = -1;
 const CONVERSATION_REPLY_CREDITS = -1;
 
 export const conversationRouter = createTRPCRouter({
+  conversations: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.session.user.id) return;
+
+    const { session } = ctx;
+
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: session.user.id,
+      },
+    });
+
+    if (!user) return;
+
+    const conversations = await ctx.prisma.conversation.findMany({
+      where: {
+        userId: user.id
+      },
+    });
+
+    return conversations;
+  }),
   getConversation: protectedProcedure
     .input(
       z.object({
@@ -172,7 +193,7 @@ export const conversationRouter = createTRPCRouter({
             messages: true,
           },
         });
-        
+
         if (!conversation) throw new TRPCError({ code: "BAD_REQUEST" });
 
         if (conversation.mode === "VIDEO") {
@@ -206,7 +227,7 @@ export const conversationRouter = createTRPCRouter({
 
           return message;
         }
-        const simplifiedConvo = conversation.messages.map(obj=> ({
+        const simplifiedConvo = conversation.messages.map(obj => ({
           assistant: obj.aiResponseText,
           user: obj.prompt,
         }))

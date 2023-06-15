@@ -10,8 +10,8 @@ export const PageContainer = ({
   title,
   description,
 }: PageContainerProps) => (
-  <div className="flex-grow space-y-6 p-10 pb-16">
-    <div className="space-y-0.5">
+  <div className="flex-grow">
+    <div className="space-y-0.5 px-5 py-3">
       <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
       <p className="pb-2 text-muted-foreground">{description}</p>
     </div>
