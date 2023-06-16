@@ -12,7 +12,8 @@ import { useRouter } from "next/router";
 import newChat from "../../public/assets/images/newChat.svg";
 import { Loader2, Send } from "lucide-react";
 import { Button } from "../ui/button";
-import { setDate } from "date-fns";
+import { format, setDate } from "date-fns";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function Chatbox() {
   const { buyCredits } = useBuyCredits();
@@ -64,17 +65,26 @@ export default function Chatbox() {
 
   if (conversationId === "new") {
     return (
-      <div className="container mx-auto mt-20 max-w-[700px] items-center justify-center rounded">
-        <div className="flex h-[600px] flex-col rounded-xl border border-gray-600 bg-gray-100">
-          <h1 className="blue_gradient py-3 text-center text-4xl font-bold text-white">
-            THERA CHAT 🤖{" "}
-          </h1>
+      <div className="w-3/4 items-start justify-start rounded">
+        <div className="flex h-full flex-col border border-gray-100 bg-white">
+            <div className="flex items-center justify-between space-x-4 pl-2 pt-2 border-b-2">
+              <div className="flex items-center space-x-4">
+               <Avatar>
+                <AvatarImage src="/assets/images/thera.png" />
+                <AvatarFallback>Th</AvatarFallback>
+              </Avatar>
+            <div>
+              <p className="text-sm font-medium leading-none">Thera</p>
+              <p className="text-sm text-muted-foreground">Active now</p>
+            </div>
+            </div>
+          </div>
           <div className="flex-grow overflow-y-auto p-6" ref={chatMessagesRef}>
             <div className="flex flex-col space-y-4 ">
               
               {chatLog.map((message, index) => (
                                 <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`${message.type === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded-xl  p-4 max-w-sm text-sm`}> 
+                                    <div className={`${message.type === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded-xl  p-4 max-w-lg text-sm`}> 
                                     {message.message}
                                     </div>
                                 </div>
@@ -123,12 +133,12 @@ function ExistingChatbox({ id }: { id: string }) {
 
   const [message, setMessage] = useState("");
   const [messageCount, setMessageCount] = useState(0);
+  
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     setLoading(true);
-    setMessage("")
-    
+    setMessage("")    
       // Optimistically update the chat log with the new message
     data?.messages.push({
       id: Math.random().toString(), // Temporary id for key prop
@@ -154,30 +164,49 @@ function ExistingChatbox({ id }: { id: string }) {
   useEffect(() => {
     if (chatMessagesRef.current) {
       chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+
+      
     }
   }, [messageCount, data]);
+  //TIME IN CHAT BAR
+  const [time, setTime] = useState<Date | null>(null);
+  useEffect(() => {
+  if (data) {
+    setTime(new Date(data.updatedAt));
+  }
+}, [data]);
 
   return (
-    <div className="container mx-auto mt-20 max-w-[700px] items-center justify-center rounded">
-      <div className="flex h-[600px] flex-col rounded-xl border border-gray-600 bg-gray-100">
-        <h1 className="blue_gradient py-3 text-center text-4xl font-bold text-white">
-          THERA CHAT{" "}
-        </h1>
-        <div className="flex-grow overflow-y-auto p-6" ref={chatMessagesRef}>
+      <div className="w-3/4 h-min items-start justify-start rounded">
+        <div className="flex flex-col border border-gray-100 bg-white h-[800px]">
+            <div className="flex items-center justify-between space-x-4 pl-2 pt-2 border-b-2">
+              <div className="flex items-center space-x-4">
+               <Avatar>
+                <AvatarImage src="/assets/images/thera.png" />
+                <AvatarFallback>Th</AvatarFallback>
+              </Avatar>
+                <div>
+                  <p className="text-sm font-medium leading-none">Thera</p>
+                  <p className="text-sm text-muted-foreground">{time && time.toLocaleString()}</p>
+                </div>
+            </div>
+          </div>
+        
+        <div className="max-h-full flex-grow overflow-y-auto p-6" ref={chatMessagesRef}>
           <div className="flex flex-col space-y-4 ">
-            <div className="max-w-sm items-end rounded-xl bg-gray-200 p-4 text-sm text-black">
+            <div className="max-w-lg items-end rounded-xl bg-gray-200 p-4 text-sm text-black overflow-y-auto">
               {botMessage}
             </div>
             {data?.messages.map((msg) => (
               <div key={msg.id} className="flex flex-col space-y-4">
                 <div className="flex justify-end ">
-                  <div className="max-w-sm items-end rounded-xl bg-blue-500 p-4 text-sm text-white">
+                  <div className="max-w-lg items-end rounded-xl bg-blue-500 p-4 text-sm text-white">
                     {msg.prompt}
                   </div>
                 </div>
                 {msg.aiResponseText.length > 0 && (
                   <div className="flex justify-start ">
-                    <div className="max-w-sm items-end rounded-xl bg-gray-200 p-4 text-sm text-black">
+                    <div className="max-w-lg items-end rounded-xl bg-gray-200 p-4 text-sm text-black">
                       {msg.aiResponseText}
                     </div>
                   </div>

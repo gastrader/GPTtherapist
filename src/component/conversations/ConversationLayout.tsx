@@ -18,8 +18,8 @@ export const ConversationLayout = ({ children }: ConvoLayoutProps) => {
           <Sidebar />
           <div className="col-span-4 flex">
             <Separator orientation="vertical" />
-            <div className=" mx-10 h-full w-full">
-              <div className="flex h-full items-center justify-center align-middle text-2xl font-semibold tracking-tight">
+            <div className=" h-full w-full">
+              <div className="flex h-[800px] align-middle text-2xl font-semibold">
                 {children}
               </div>
             </div>

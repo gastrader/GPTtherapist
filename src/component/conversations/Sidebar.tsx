@@ -118,7 +118,7 @@ function ConversationList() {
                 className="w-full justify-start font-normal"
               >
                 <MessageSquare className="mr-2 h-4 w-4" />
-                Conversation: {format(conversation.updatedAt, "d-M-yyyy")}
+                Time: {conversation.updatedAt.toLocaleString()}
               </Button>
             </Link>
           ))}
