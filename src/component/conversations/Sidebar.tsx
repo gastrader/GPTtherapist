@@ -116,7 +116,7 @@ function ConversationList() {
           {conversations?.map((conversation) => (
             <Link
               key={conversation.id}
-              href={`/conversations/${conversation.id}`}
+              href={`/conversations/${conversation.id}?type=text`}
               passHref
             >
               <Button
