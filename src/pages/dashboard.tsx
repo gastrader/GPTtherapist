@@ -5,81 +5,81 @@ import Head from "next/head";
 import Greeting from "~/component/Greeting";
 import { dashboard } from "../constants";
 import Link from "next/link";
+import Image from "next/image";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { el } from "date-fns/locale";
-
-
+import { Mic } from "lucide-react";
 
 interface DashboardCardProps {
-    index: number;
-    name: string;
-    description: string;
-    source_code_link: string;
+  index: number;
+  name: string;
+  description: string;
+  source_code_link: string;
+  picture: string;
+  Icon: React.ComponentType<{ className?: string }>;
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({
-    index,
-    name,
-    description,
-    source_code_link,
+  index,
+  name,
+  description,
+  source_code_link,
+  picture,
+  Icon,
 }) => {
-    return (
-        <div className='bg-gray-200 p-5 rounded-2xl lg:w-[360px] bg-gradient-to-r from-gray-300 to-gray-200 relative snap-start border border-black'>
-            <div className='relative w-full h-[230px]'>
-
-                <div className='absolute inset-0 flex justify-end m-3 card-img_hover'>
-                    <div
-                        onClick={() => window.open(source_code_link, "_blank")}
-                        className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
-                    >
-                    </div>
-                </div>
+  return (
+    <Link href={source_code_link}>
+      <div className="relative snap-start rounded-2xl border border-black bg-gray-200 bg-gradient-to-r from-gray-300 to-gray-200 p-5 lg:w-[360px]">
+        <div className="relative h-[230px] w-full">
+          <div className="card-img_hover absolute inset-0 m-3 flex justify-end">
+            <Image alt="card" src={picture} width={200} height={100} className="rounded-xl"></Image>
+            <div className="black-gradient flex h-10 w-10 cursor-pointer items-center justify-center rounded-full">
+              <Icon className=" h-4 w-4" />
             </div>
-            <div className='mt-5'>
-                <h3 className='text-black font-bold text-[24px]'>{name}</h3>
-                <p className='mt-2 text-secondary text-[14px] pb-4'>{description}</p>
-            </div>
+          </div>
         </div>
-        
-    )
-}
+        <div className="mt-5">
+          <h3 className="text-[24px] font-bold text-black">{name}</h3>
+          <p className="mt-2 pb-4 text-[14px] text-gray-600">{description}</p>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 const Dashboard: NextPage = () => {
-
-
-
-    return (
-        <div>
-            <Head>
-                <title>GPTtherapy</title>
-                <meta name="description" content="Therapy on the go" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <div className="flex flex-col w-full gap- ">
-                <div className="flex items-center justify-center flex-col  border-black border mx-2 rounded-2xl">
-                    <h1 className="head_text text-center ">
-                        <Greeting/>
-                        <br className="max-md:hidden " />
-                        <span className="blue_gradient text-center text-4xl "> LET&apos;S GET STARTED </span>
-                    </h1>
-                    <p className="desc text-center">
-                        Select a program below:
-                    </p>
-                    <div className="flex flex-row gap-2 my-2">
-                    {/* voice, generate, chat */}
-                    <Link  href="/conversations/"className="outline_btn">New Chat</Link>
-                    <Link href="/existing" className="outline_btn">Existing Chats</Link>
-                    </div>
-                </div>
-                <div className='flex flex-wrap gap-7 py-4 items-center justify-center mx-1'>
-                    {dashboard.map((project, index) => (
-                        <DashboardCard key={`project-${index}`} index={index} {...project} />
-                    ))}
-                </div>
-            </div>
+  return (
+    <div>
+      <Head>
+        <title>GPTtherapy</title>
+        <meta name="description" content="Therapy on the go" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className="gap- flex w-full flex-col ">
+        <div className="mx-2 flex flex-col items-center  justify-center rounded-2xl border border-black">
+          <h1 className="head_text text-center ">
+            <Greeting />
+            <br className="max-md:hidden " />
+            <span className="blue_gradient text-center text-4xl ">
+              {" "}
+              LET&apos;S GET STARTED{" "}
+            </span>
+          </h1>
+          <p className="desc text-center">Select a resource below:</p>
         </div>
-    )
-}
+        <div className="mx-1 flex flex-wrap items-center justify-center gap-7 py-4">
+          {dashboard.map((project, index) => (
+            <DashboardCard
+              key={`project-${index}`}
+              index={index}
+              {...project}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Dashboard;
