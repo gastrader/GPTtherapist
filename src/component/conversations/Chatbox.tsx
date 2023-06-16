@@ -27,9 +27,9 @@ export default function Chatbox() {
     {
       type: "bot",
       message:
-        "Hi! My name is Thera, a compassionate AI therapist ready to lend an empathetic ear and guide you towards self-discovery and personal growth. Step into a realm of profound conversation where you can explore your innermost thoughts, find solace, and unlock the transformative power of therapeutic support. Send me a message to get started!",
+        "Hi! My name is Thera, an AI empowered therapist ready to lend an ear and guide you towards self-discovery and personal growth. Step into a realm of profound conversation where you can explore your innermost thoughts, find solace, and unlock the transformative power of therapeutic support. Send me a message to get started!",
     },
-  ]
+  ];
   const [chatLog, setChatLog] = useState<{ type: string; message: string }[]>(botMessage);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
 
@@ -124,7 +124,7 @@ export default function Chatbox() {
 function ExistingChatbox({ id }: { id: string }) {
   const chatMessagesRef = useRef<HTMLDivElement>(null);
   const queryContext = api.useContext();
-  const botMessage = "Hi! My name is Thera, a compassionate AI therapist ready to lend an empathetic ear and guide you towards self-discovery and personal growth. Step into a realm of profound conversation where you can explore your innermost thoughts, find solace, and unlock the transformative power of therapeutic support. Send me a message to get started!"
+  const botMessage = "Hi! My name is Thera, an AI empowered therapist ready to lend an ear and guide you towards self-discovery and personal growth. Step into a realm of profound conversation where you can explore your innermost thoughts, find solace, and unlock the transformative power of therapeutic support. Send me a message to get started!"
 
   const [loading, setLoading] = useState(false);
 

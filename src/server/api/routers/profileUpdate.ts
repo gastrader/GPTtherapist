@@ -8,7 +8,7 @@ export const profileRouter = createTRPCRouter({
     updateName: protectedProcedure.input(
         z.object({
             name: z.string(),
-            age: z.number(),
+            age: z.string(),
             gender: z.string(),
             bio: z.string(),
         })

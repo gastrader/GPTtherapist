@@ -267,7 +267,7 @@ export const conversationRouter = createTRPCRouter({
                 fileStream.on('finish', () => {
                     console.log('MP3 file created successfully.');
                     // After the file is created, wait for 2 seconds and then make the API call
-                    delay(2000)
+                    delay(500)
                         .then(() => {
                             openai.createTranscription(fs.createReadStream(filePath) as any, "whisper-1")
                                 .then((response) => {
@@ -285,6 +285,7 @@ export const conversationRouter = createTRPCRouter({
             });
         }
         const transcription = await convertbase64tomp3(input.message);
+        
         console.log("The transcript is: ", transcription);
 
           const { aiResponse, base64, clipId, resultUrl } =

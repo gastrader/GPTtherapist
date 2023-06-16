@@ -63,8 +63,7 @@ const accountFormSchema = z.object({
         .string()
         .refine((value) => /^\d+$/.test(value), {
             message: "Age must be a valid number.",
-            })
-        .transform((value) => parseInt(value, 10)),
+            }),
     gender: z.string({
         required_error: "Please select a gender.",
     }),
@@ -87,7 +86,7 @@ export function ProfileForm() {
         if (queryResult.isSuccess) {
             const data = queryResult.data;
             setValue('name', data?.name || '');
-            setValue('age', data?.age as number || NaN);
+            setValue('age', data?.age as string || '');
             setValue('bio', data?.bio as string || '' )
             setValue('gender', data?.gender as string || '');
         }
