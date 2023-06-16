@@ -37,14 +37,21 @@ export function Sidebar({}: SidebarProps) {
             size="sm"
             className="w-full justify-start"
           >
-            <Link href="/conversations/new">
+            <Link href="/conversations/new?type=text">
               <ScrollText className="mr-2 h-4 w-4" />
               Text Me
             </Link>
           </Button>
-          <Button variant="ghost" size="sm" className="w-full justify-start">
-            <Mic className="mr-2 h-4 w-4" />
-            Talk to Me
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start"
+          >
+            <Link href="/conversations/new?type=video">
+              <Mic className="mr-2 h-4 w-4" />
+              Talk to Me
+            </Link>
           </Button>
         </div>
       </div>

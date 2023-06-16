@@ -1,16 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-
+import { env } from "~/env.mjs";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { Configuration, OpenAIApi } from "openai";
 import { getChatResponse, s3PutBase64 } from "../../utils";
 import { createAIVideoResponse } from "../../createAIVideoResponse";
+import type Error from "next/error";
+import fs from 'fs';
 
 const CONVERSATION_CREATE_CREDITS = -1;
 const CONVERSATION_REPLY_CREDITS = -1;
-
+const configuration = new Configuration({
+    apiKey: env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 export const conversationRouter = createTRPCRouter({
   conversations: protectedProcedure.query(async ({ ctx }) => {
     if (!ctx.session.user.id) return;
@@ -107,12 +115,45 @@ export const conversationRouter = createTRPCRouter({
         });
 
         if (input.conversationType === "VIDEO") {
+          function delay(ms: number) {
+            return new Promise((resolve) => setTimeout (resolve, ms))
+            }
+
+          function convertbase64tomp3(base64: string): Promise<string> {
+            return new Promise((resolve, reject) => {
+                const decodedData = Buffer.from(base64, 'base64');
+                const filePath = `tmp/${ctx.session.user.id}_audio.mp3`;
+                const fileStream = fs.createWriteStream(filePath);
+                fileStream.write(decodedData);
+                fileStream.end();
+                fileStream.on('finish', () => {
+                    console.log('MP3 file created successfully.');
+                    // After the file is created, wait for 2 seconds and then make the API call
+                    delay(2000)
+                        .then(() => {
+                            openai.createTranscription(fs.createReadStream(filePath) as any, "whisper-1")
+                                .then((response) => {
+                                    const transcription = response.data.text;
+                                    resolve(transcription);
+                                })
+                                .catch((error: Error) => {
+                                    reject(error);
+                                });
+                        })
+                        .catch((error: Error) => {
+                            reject(error);
+                        });
+                });
+            });
+        }
+        const transcription = await convertbase64tomp3(input.message);
+        console.log("The transcript is: ", transcription);
           const { aiResponse, base64, clipId, resultUrl } =
-            await createAIVideoResponse(input.message);
+            await createAIVideoResponse(transcription);
 
           const message = await ctx.prisma.message.create({
             data: {
-              prompt: input.message,
+              prompt: transcription,
               aiResponseText: aiResponse,
               aiResponseUrl: resultUrl, // this should be the bucket url ideally
               user: {
@@ -212,12 +253,46 @@ export const conversationRouter = createTRPCRouter({
         if (!conversation) throw new TRPCError({ code: "BAD_REQUEST" });
 
         if (conversation.mode === "VIDEO") {
+          function delay(ms: number) {
+            return new Promise((resolve) => setTimeout (resolve, ms))
+            }
+
+          function convertbase64tomp3(base64: string): Promise<string> {
+            return new Promise((resolve, reject) => {
+                const decodedData = Buffer.from(base64, 'base64');
+                const filePath = `tmp/${ctx.session.user.id}_audio.mp3`;
+                const fileStream = fs.createWriteStream(filePath);
+                fileStream.write(decodedData);
+                fileStream.end();
+                fileStream.on('finish', () => {
+                    console.log('MP3 file created successfully.');
+                    // After the file is created, wait for 2 seconds and then make the API call
+                    delay(2000)
+                        .then(() => {
+                            openai.createTranscription(fs.createReadStream(filePath) as any, "whisper-1")
+                                .then((response) => {
+                                    const transcription = response.data.text;
+                                    resolve(transcription);
+                                })
+                                .catch((error: Error) => {
+                                    reject(error);
+                                });
+                        })
+                        .catch((error: Error) => {
+                            reject(error);
+                        });
+                });
+            });
+        }
+        const transcription = await convertbase64tomp3(input.message);
+        console.log("The transcript is: ", transcription);
+
           const { aiResponse, base64, clipId, resultUrl } =
-            await createAIVideoResponse(input.message);
+            await createAIVideoResponse(transcription);
 
           const message = await ctx.prisma.message.create({
             data: {
-              prompt: input.message,
+              prompt: transcription,
               aiResponseText: aiResponse,
               aiResponseUrl: resultUrl, // this should be the bucket url ideally
               user: {

@@ -19,7 +19,7 @@ export const ConversationLayout = ({ children }: ConvoLayoutProps) => {
           <div className="col-span-4 flex">
             <Separator orientation="vertical" />
             <div className=" h-full w-full">
-              <div className="flex h-[800px] align-middle text-2xl font-semibold">
+              <div className="flex h-[1000px] align-middle text-2xl font-semibold">
                 {children}
               </div>
             </div>

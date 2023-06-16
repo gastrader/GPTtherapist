@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -44,7 +45,7 @@ export default function Chatbox() {
     const res = await mutateAsync({ message: inputValue });
 
     if (res) {
-      await router.replace(`/conversations/${res.conversation.id}`);
+      await router.replace(`/conversations/${res.conversation.id}?type=text`);
     }
     setLoading(false)
     

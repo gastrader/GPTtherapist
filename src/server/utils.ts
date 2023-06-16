@@ -35,6 +35,9 @@ export async function getdIDClipId(text: string): Promise<string> {
       script: { type: "text", input: text },
       presenter_id: "amy-jcwCkr1grs",
       driver_id: "uM00QMwJ9x",
+      background: {
+        "color": "#e5e7eb"
+        }
     },
   };
 
@@ -88,3 +91,4 @@ export function s3PutBase64(body: string | Buffer, key: string) {
     }
   );
 }
+
