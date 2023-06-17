@@ -39,6 +39,7 @@
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.12.16",
+    "jspdf": "^2.5.1",
     "lucide-react": "^0.241.0",
     "micro": "^10.0.1",
     "next": "^13.2.1",

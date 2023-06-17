@@ -6,10 +6,7 @@ import Greeting from "~/component/Greeting";
 import { dashboard } from "../constants";
 import Link from "next/link";
 import Image from "next/image";
-import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import { el } from "date-fns/locale";
-import { Mic } from "lucide-react";
+
 
 interface DashboardCardProps {
   index: number;
@@ -21,7 +18,7 @@ interface DashboardCardProps {
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({
-  index,
+  
   name,
   description,
   source_code_link,
@@ -33,8 +30,8 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
       <div className="relative snap-start rounded-2xl border border-black bg-gray-200 bg-gradient-to-r from-gray-300 to-gray-200 p-5 lg:w-[360px]">
         <div className="relative h-[230px] w-full">
           <div className="card-img_hover absolute inset-0 m-3 flex justify-end">
-            <Image alt="card" src={picture} width={200} height={100} className="rounded-xl"></Image>
-            <div className="black-gradient flex h-10 w-10 cursor-pointer items-center justify-center rounded-full">
+            <Image alt="card" src={picture} width={200} height={100} className=""></Image>
+            <div className="black-gradient flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-300">
               <Icon className=" h-4 w-4" />
             </div>
           </div>

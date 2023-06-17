@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
+import fs from "fs";
 
 export const chatqueryRouter = createTRPCRouter({
   //mutation = insert/delete or modify state of server
@@ -15,20 +16,7 @@ export const chatqueryRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      let selectedFields = {};
-
-      if (input.type == "chat") {
-        selectedFields = {
-          text_ai_response: true,
-          text_prompt: true,
-        };
-      } else if (input.type == "video") {
-        selectedFields = {
-          video_ai_response: true,
-          video_prompt: true,
-        };
-      }
-
+      if (!ctx.session.user.id) return;
       const oldDate = new Date(input.date);
       const dbDate = oldDate.toISOString();
       const nextDayDate = new Date(
@@ -36,29 +24,63 @@ export const chatqueryRouter = createTRPCRouter({
       );
       const nextDate = nextDayDate.toISOString();
 
-      console.log("The updated date is: ", dbDate);
-      console.log("the next date is: ", nextDate);
-      let chats = await ctx.prisma.message.findMany({
+      const chats = await ctx.prisma.conversation.findMany({
         where: {
           userId: ctx.session.user.id,
+          mode: input.type,
           createdAt: {
             gte: dbDate,
             lt: nextDate,
           },
         },
-        select: selectedFields,
+
+        orderBy: {
+          updatedAt: "desc",
+        },
+
+        include: {
+          messages: true,
+        },
       });
-      chats = chats.map((chat) => {
-        const chatAsIndexable = chat as { [key: string]: any };
-        Object.keys(chatAsIndexable).forEach((key) => {
-          if (chatAsIndexable[key] === null) {
-            delete chatAsIndexable[key];
-          }
-        });
-        return chatAsIndexable;
-      });
-      chats = chats.filter((chat) => Object.keys(chat).length > 0);
-      console.log(chats);
+
       return chats;
+    }),
+  convoFile: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const convo = await ctx.prisma.message.findMany({
+        where: {
+          userId: ctx.session.user.id,
+          conversationId: input.id,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          user: true,
+        },
+      });
+      
+      const formattedConvo = convo.map(
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        (obj) => `${obj.user.name}: ${obj.prompt}\nTHERAPIST: ${obj.aiResponseText}`
+      );
+
+      const reformattedConvo = convo
+        .map(
+          (obj) =>
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            `${obj.user.name}: ${obj.prompt}\nTHERAPIST: ${obj.aiResponseText}`
+        ).join("\n");        
+
+      // fs.writeFile(`./tmp/${input.id}_conversation.txt`, reformattedConvo, (err) => {
+      //   if (err) throw err;
+      //   console.log("File is created successfully.");
+      // }); 
+      return reformattedConvo;
     }),
 });

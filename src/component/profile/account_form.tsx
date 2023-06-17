@@ -27,9 +27,11 @@ import {
 import { cn } from "../../lib/utils";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Download } from "lucide-react";
 import { api } from "~/utils/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { jsPDF } from "jspdf";
 
 const accountFormSchema = z.object({
   type: z.string({
@@ -43,39 +45,70 @@ const accountFormSchema = z.object({
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
 export function AccountForm() {
-  const [submittedValues, setSubmittedValues] = useState<
-    AccountFormValues | undefined
-  >();
+const [submittedValues, setSubmittedValues] = useState<AccountFormValues | undefined>();
+const [clickedId, setClickedId] = useState("");
+const form = useForm<AccountFormValues>({
+  resolver: zodResolver(accountFormSchema),
+});
 
-  const form = useForm<AccountFormValues>({
-    resolver: zodResolver(accountFormSchema),
-  });
-  interface Transcript {
-    text_prompt?: string;
-    video_prompt?: string;
-    video_ai_response?: string;
-    text_ai_response?: string;
+const {
+  data: convos,
+  isLoading,
+  error,
+} = api.chatqueryRouter.queryChat.useQuery(submittedValues || {type: "text", date: new Date()}, {
+  enabled: Boolean(submittedValues),
+});
+
+const onSubmit = (data: AccountFormValues) => {
+  console.log("we are in submit function", data);
+  setSubmittedValues(data);
+  console.log(convos)
+};
+
+const { data } = api.chatqueryRouter.convoFile.useQuery({ id: clickedId });
+console.log("The data variable is:",data)
+
+const downloadData = (data: string) => {
+  if (data) {
+    //ATEMPT AT PDF
+    // const doc = new jsPDF('p');
+    // doc.setFont('Arial').setFontSize(12).splitTextToSize(data, 7.25)
+    // doc.text(data, 10, 10);
+    // doc.save("PDFWORKED72.pdf");
+    const blob = new Blob([data], { type: "text/plain" });
+    const href = URL.createObjectURL(blob);
+    const a = Object.assign(document.createElement("a"), {
+      href,
+      style: "display:none",
+      download: "Conversation.txt",
+    });
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(href);
+    a.remove();
   }
+}
+ useEffect(() => {
+   if (clickedId) { 
+    // Fetch or compute your data here
+    console.log("WE ARE IN THE USE EFFECT, SHOULD BE DONWLOADING")
+    ;
+   }
+ }, [clickedId]);
 
-  const { data: rawData, isLoading } = api.chatqueryRouter.queryChat.useQuery<
-    Transcript[]
-  >(
-    // @ts-expect-error The query isn't enabled if submittedValues is undefined, so the query input should always exist
-    submittedValues,
-    {
-      enabled: typeof submittedValues !== "undefined",
-      queryKey: ["transcripts", submittedValues?.date, submittedValues?.type],
+
+if (error) {
+  return <p>An error occurred: {error.message}</p>; // Or your own error component
+}
+
+const handleClick =  (id:string) => {
+  setClickedId(id)
+    if (data) {
+      downloadData(data);
+    } else {
+      console.error("Data is undefined");
     }
-  );
-  const data = rawData as Transcript[];
-
-  console.log({ data, isLoading });
-
-  function onSubmit(data: AccountFormValues) {
-    console.log("we are in submit function", data);
-    setSubmittedValues(data);
-  }
-
+};
   return (
     <>
       <Form {...form}>
@@ -96,8 +129,8 @@ export function AccountForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="chat">Chat Logs</SelectItem>
-                    <SelectItem value="video">Video Transcript</SelectItem>
+                    <SelectItem value="TEXT">Chat Logs</SelectItem>
+                    <SelectItem value="VIDEO">Video Transcript</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription>
@@ -154,32 +187,35 @@ export function AccountForm() {
           <Button type="submit">Get Transcript</Button>
         </form>
       </Form>
-      {submittedValues && (
-        <div className="container mx-auto mt-20 max-w-[700px] items-center justify-center rounded">
-          <div className="flex h-[600px] flex-col rounded-xl border border-gray-600 bg-gray-100">
-            <h1 className="blue_gradient py-3 text-center text-4xl font-bold text-white">
-              THERA CHAT 🤖{" "}
-            </h1>
-            <div className="flex-grow overflow-y-auto p-6">
-              <div className="flex flex-col space-y-4 ">
-                <div className="flex flex-col rounded bg-gray-100 p-4 ">
-                  {data?.map((transcript, index) => (
-                    <div
-                      key={index}
-                      className="mt-4 flex flex-col gap-4 rounded bg-gray-100 px-4 "
-                    >
-                      <div className="max-w-sm justify-end self-end rounded-xl bg-gray-200 p-4 text-end text-black">
-                        {transcript.text_prompt || transcript.video_prompt}
-                      </div>
-                      <div className="max-w-sm justify-start rounded-xl bg-blue-500 p-4 text-start text-white">
-                        {transcript.text_ai_response ||
-                          transcript.video_ai_response}
-                      </div>
-                    </div>
-                  ))}
+      {convos && (
+        <div className="container mx-auto mb-10 mt-20 w-[800px] items-center justify-center rounded">
+          <h1 className="border py-3 text-center text-4xl font-bold text-black">
+            Transcripts
+          </h1>
+          <div className=" h-[400px] flex-grow overflow-y-auto border p-6">
+            {convos &&
+              convos.map((convo, i) => (
+                <div
+                  key={i}
+                  className="my-2 flex rounded-xl border bg-gray-100 p-3"
+                >
+                  <div>
+                    <p className="w-max font-semibold">
+                      Subject: {convo.subject}
+                    </p>
+                    <p className="text-sm">
+                      Created At: {new Date(convo.createdAt).toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="flex w-full items-center justify-end p-2">
+                    <Download
+                      onClick={() => handleClick(convo.id)}
+                      key={convo.id}
+                      className="m-2 cursor-pointer rounded-md hover:bg-gray-300"
+                    ></Download>
+                  </div>
                 </div>
-              </div>
-            </div>
+              ))}
           </div>
         </div>
       )}

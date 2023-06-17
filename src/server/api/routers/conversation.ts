@@ -105,7 +105,7 @@ export const conversationRouter = createTRPCRouter({
         const conversation = await ctx.prisma.conversation.create({
           data: {
             mode: input.conversationType,
-            subject: "default_subject_message",
+            subject: "THERAPIST CHAT",
             user: {
               connect: {
                 id: session.user.id,
