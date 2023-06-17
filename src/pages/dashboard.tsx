@@ -29,8 +29,8 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
     <Link href={source_code_link}>
       <div className="relative snap-start rounded-2xl border border-black bg-gray-200 bg-gradient-to-r from-gray-300 to-gray-200 p-5 lg:w-[360px]">
         <div className="relative h-[230px] w-full">
-          <div className="card-img_hover absolute inset-0 m-3 flex justify-end">
-            <Image alt="card" src={picture} width={200} height={100} className=""></Image>
+          <div className="card-img_hover absolute inset-0 flex justify-end">
+            <Image alt="card" src={picture} width={200} height={100} className="mx-auto"></Image>
             <div className="black-gradient flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-300">
               <Icon className=" h-4 w-4" />
             </div>

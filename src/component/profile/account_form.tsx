@@ -89,12 +89,12 @@ const downloadData = (data: string) => {
   }
 }
  useEffect(() => {
-   if (clickedId) { 
-    // Fetch or compute your data here
+   if (clickedId && data) { 
+    downloadData(data);
     console.log("WE ARE IN THE USE EFFECT, SHOULD BE DONWLOADING")
     ;
    }
- }, [clickedId]);
+ }, [clickedId, data]);
 
 
 if (error) {
