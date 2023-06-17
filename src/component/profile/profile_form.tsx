@@ -51,24 +51,31 @@ const gender = [
 
 
 const accountFormSchema = z.object({
-    name: z
-        .string()
-        .min(2, {
-            message: "Name must be at least 2 characters.",
-        })
-        .max(30, {
-            message: "Name must not be longer than 30 characters.",
-        }),
-    age: z
-        .string()
-        .refine((value) => /^\d+$/.test(value), {
-            message: "Age must be a valid number.",
-            }),
-    gender: z.string({
-        required_error: "Please select a gender.",
+  name: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .max(30, {
+      message: "Name must not be longer than 30 characters.",
     }),
-    bio: z.string().max(160).min(4),
-})
+
+  age: z
+    .string()
+    .refine(
+      (value) => value === undefined || value === "" || /^\d+$/.test(value),
+      {
+        message: "Age must be a valid number.",
+      }
+    )
+    .optional(),
+  gender: z
+    .string({
+      required_error: "Please select a gender.",
+    })
+    .optional(),
+  bio: z.string().max(160).optional(),
+});
 
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
@@ -103,9 +110,9 @@ export function ProfileForm() {
         console.log("we are in submit function", data)
         updateName.mutate({ 
             name:data.name,
-            age:data.age,
-            gender:data.gender,
-            bio:data.bio,
+            age:data.age || "",
+            gender:data.gender || "",
+            bio:data.bio || "",
         })
     }
 
