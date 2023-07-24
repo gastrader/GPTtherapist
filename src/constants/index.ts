@@ -4,45 +4,40 @@ export const dashboard = [
   {
     name: "Chat with a therapist App",
     description:
-      "This web application provides users with the convenience of accessing professional therapy services",
+      "This web application provides users with the convenience of accessing professional therapy services from the comfort of their home.",
     source_code_link: "/conversations",
     picture: "/assets/images/chatpic2.png",
     Icon: Mic,
+    construction: false,
   },
   {
     name: "Journaling App",
     description:
-      "This web application provides users with the convenience of accessing professional therapy services",
+      "Embrace self-reflection and personal growth with our intuitive journaling app. Seamlessly capture your thoughts and emotions all in one place. ",
 
     source_code_link: "/journal",
     picture: "/assets/images/journal.png",
     Icon: BookPlus,
+    construction: true,
   },
   {
     name: "Meditation App",
     description:
-      "This web application provides users with the convenience of accessing professional therapy services",
+      "Our app is designed to help you manage stress, improve focus, and foster a deeper connection with yourself.",
 
     source_code_link: "/meditate",
     picture: "/assets/images/meditate2.png",
     Icon: Clock,
+    construction: true,
   },
   {
     name: "To-Do List App",
     description:
-      "This web application provides users with the convenience of accessing professional therapy services",
+      "Stay organized, stay on top of your tasks, and conquer your day with our efficient to-do list app.",
     source_code_link: "/todo",
     picture: "/assets/images/todo.png",
     Icon: ScrollText,
-  },
-
-  {
-    name: "To-Do List App",
-    description:
-      "This web application provides users with the convenience of accessing professional therapy services",
-    source_code_link: "/todo",
-    picture: "/assets/images/todo.png",
-    Icon: Scroll,
+    construction: true,
   },
 ];
 

@@ -4,7 +4,7 @@ import { listItems } from "~/constants"
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 export const WhyHero = () => {
     return (
-        <section className="py-6 bg-gray-300 lg:py-16 items-center justify-center px-20 mx-20 rounded-3xl mb-5 flex">
+        <section className="my-10 py-6 bg-gray-300 lg:py-16 items-center justify-center px-20 mx-20 rounded-3xl mb-5 flex">
             <div className="container text-center lg:text-left">
                 <div className="grid lg:grid-cols-2 mb-12 lg:mb-16">
                     <div className="col-span-1">

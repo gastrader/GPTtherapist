@@ -18,25 +18,25 @@ export function Footer() {
         Have an amazing day!
       </strong>
       <div className="flex flex-wrap gap-2 py-2">
-        <a href="/about" className=" footer_btn">
+        <a className=" footer_btn">
           About Us
         </a>
-        <a href="/contact" className=" footer_btn">
+        <a  className=" footer_btn">
           Contact Us
         </a>
-        <a href="/team" className=" footer_btn">
+        <a className=" footer_btn">
           Team
         </a>
-        <a href="/privacy" className=" footer_btn">
+        <a className=" footer_btn">
           Privacy
         </a>
-        <a href="/policy" className=" footer_btn">
+        <a  className=" footer_btn">
           Policies
         </a>
       </div>
       <p className="flex gap-1 pb-4">
         Need Help? Email
-        <a href="mailto:support@gpttherapy.com" className="underline">
+        <a href="mailto:gaslimits@gmail.com" className="underline">
           {" "}
           support@gpttherapy.com
         </a>

@@ -54,7 +54,7 @@ export function Nav() {
           {isLoggedIn && (
             <li className="flex items-center gap-4">
               <p>Credits Remaining: {credits}</p>
-              
+
               {session.data?.user?.image && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -70,27 +70,35 @@ export function Nav() {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator></DropdownMenuSeparator>
                     <DropdownMenuItem>
-                      <LayoutGrid className="mr-2 h-4 w-4" />
-                      <span>Dashboard</span>
+                      <Link href="/dashboard" className="flex">
+                        <LayoutGrid className="mr-2 h-4 w-4" />
+                        <span>Dashboard</span>
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator></DropdownMenuSeparator>
                     <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
+                      <Link href="/profile" className="flex">
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>Transcripts</span>
+                      <Link href="/profile/account" className="flex">
+                        <Settings className="mr-2 h-4 w-4" />
+                        <span>Transcripts</span>
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <BellRing className="mr-2 h-4 w-4" />
-                      <span>Notifications</span>
+                      <Link href="/profile/notifications" className="flex">
+                        <BellRing className="mr-2 h-4 w-4" />
+                        <span>Notifications</span>
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    {/* <DropdownMenuItem>
                       <LifeBuoy className="mr-2 h-4 w-4" />
                       <span>Support</span>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuItem disabled>
                       <Cloud className="mr-2 h-4 w-4" />
                       <span>Premium</span>

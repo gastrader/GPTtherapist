@@ -20,10 +20,10 @@ const SuccessPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="w-full h-full flex items-center justify-center flex-col mb-[500px]">
-                <h1 className="fail_text text-center">Your payment has failed!
+                <div className="fail_text text-center">Your payment has failed!
                     <br className="max-md:hidden" />
                     <span className="text-center text-3xl text-black"> Redirecting to home page... </span>
-                </h1>
+                </div>
             </div>
         </section>
     );

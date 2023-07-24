@@ -10,8 +10,9 @@ type ConvoLayoutProps = {
 export const ConversationLayout = ({ children }: ConvoLayoutProps) => {
   return (
     <PageContainer
-      title="Conversations"
-      description="Interested in having a conversation with an AI empowered therapist?"
+      title="Conversations "
+      note="NOTE during development we have disabled the ability to video chat due to high API costs, please use the text chat in the mean time"
+      description="Interested in having a conversation with an AI empowered therapist? "
     >
       <div className="hidden border-t bg-background md:block">
         <div className="grid lg:grid-cols-5">
