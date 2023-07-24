@@ -1,6 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { userRouter } from "~/server/api/routers/user";
-import { generateRouter } from "~/server/api/routers/generate";
+// import { generateRouter } from "~/server/api/routers/generate";
 import { checkoutRouter } from "~/server/api/routers/checkout";
 import { voiceRouter } from "~/server/api/routers/voice";
 import { chatRouter } from "~/server/api/routers/chat";
@@ -17,7 +17,7 @@ import { conversationRouter } from "./routers/conversation";
  */
 export const appRouter = createTRPCRouter({
   user: userRouter,
-  generate: generateRouter,
+  // generate: generateRouter,
   checkout: checkoutRouter,
   chat: chatRouter,
   voice: voiceRouter,

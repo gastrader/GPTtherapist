@@ -59,7 +59,6 @@ export const chatRouter = createTRPCRouter({
         const activeConversation = await ctx.prisma.conversation.findFirst({
             where: {
                 userId: ctx.session.user.id,
-                
             },
             orderBy: {
                 createdAt: 'desc'
