@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
-import fs from "fs";
+
 
 export const chatqueryRouter = createTRPCRouter({
   //mutation = insert/delete or modify state of server

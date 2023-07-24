@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import { env } from "../env.mjs";
 import axios from "axios";
 import AWS from "aws-sdk";
-import { api } from "~/utils/api";
+
 const configuration = new Configuration({
   apiKey: env.OPENAI_API_KEY,
 });
