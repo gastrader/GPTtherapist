@@ -59,7 +59,7 @@ export const chatRouter = createTRPCRouter({
         const activeConversation = await ctx.prisma.conversation.findFirst({
             where: {
                 userId: ctx.session.user.id,
-                status: 'active'
+                
             },
             orderBy: {
                 createdAt: 'desc'
@@ -74,8 +74,8 @@ export const chatRouter = createTRPCRouter({
         
         const convo = await ctx.prisma.message.create({
             data: {
-                text_prompt: input,
-                text_ai_response: message,
+                prompt: input,
+                aiResponseText: message || "",
                 userId: ctx.session.user.id,
                 createdAt: new Date(),
                 conversationId: activeConversation.id
