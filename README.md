@@ -2,6 +2,8 @@
 
 This is an AI empowered tool to help democratize the access to mental health support. With this application a personal digital therapist is put into everyone's pocket!
 
+This application is functional with Stripe to collect payments in exchange for tokens to use in our chat bots.
+
 ## This app was built with:
 
 - [Next.js](https://nextjs.org)
