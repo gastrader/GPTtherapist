@@ -24,6 +24,7 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <PageContainer
+    note=""
       title="Settings"
       description="Manage your account settings and set e-mail preferences."
     >
