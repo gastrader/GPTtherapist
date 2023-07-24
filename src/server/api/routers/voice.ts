@@ -11,6 +11,7 @@ import { env } from "~/env.mjs";
 import fs from 'fs';
 import axios from "axios";
 import AWS from "aws-sdk";
+import { randomInt, randomUUID } from "crypto";
 
 
 const configuration = new Configuration({
@@ -109,10 +110,11 @@ export const voiceRouter = createTRPCRouter({
         //ADD TO DB
         const convo = await ctx.prisma.message.create({
             data: {
-                video_prompt: transcription,
-                video_ai_response: message,
+                prompt: transcription,
+                aiResponseText: message || "",
                 userId: ctx.session.user.id,
-                createdAt: new Date()
+                createdAt: new Date(),
+                conversationId: randomInt(1,999999).toString()
             },
         });
         console.log("the convo and convo ID are: ", convo, convo.id)
