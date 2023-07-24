@@ -276,6 +276,7 @@ function ExistingVideobox({ id }: { id: string }) {
           </div>
         </div>
         <ReactMediaRecorder
+        
           audio
           render={({ startRecording, stopRecording, status, mediaBlobUrl }) => (
             <div className="mx-4 my-2 flex w-auto items-center justify-center rounded-xl border border-gray-300 pt-2">

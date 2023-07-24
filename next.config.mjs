@@ -25,4 +25,21 @@ const config = {
     defaultLocale: "en",
   },
 };
+module.exports = {
+  webpack: (/** @type {{ module: { rules: { test: RegExp; loader: string; options: { name: string; publicPath: string; }; }[]; }; output: { globalObject: string; }; }} */ config) => {
+    config.module.rules.push({
+      test: /\.worker\.js$/,
+      loader: 'worker-loader',
+      options: {
+        name: 'static/[hash].worker.js',
+        publicPath: '/_next/'
+      }
+    })
+
+    // Overcome Webpack referencing `window` in chunks
+    config.output.globalObject = `(typeof self !== 'undefined' ? self : this)`
+
+    return config
+  }
+}
 export default config;

@@ -14,10 +14,7 @@ export default function ConversationIdPage() {
     <>
       {type === 'text' && <Chatbox />}
       {type === 'video' && <Videobox />}
-      
-    
     </>
-
   );
 }
 
