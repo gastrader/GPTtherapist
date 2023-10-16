@@ -14,7 +14,7 @@ This application is functional with Stripe to collect payments in exchange for t
 - [AWS S3](https://aws.amazon.com/s3/)
 
 ## Landing Page
-![image](https://github.com/gastrader/GPTtherapist/assets/37260212/e82cc652-aa83-4f7f-9add-e33264ead2da)
+![image](/public/assets/images/SS/Screenshot%202023-10-16%20143620.png)
 
 ![landing](https://github.com/gastrader/GPTtherapist/assets/37260212/670afecb-ba75-4f87-948c-3239f19ec98d)
 
