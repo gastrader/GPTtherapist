@@ -11,7 +11,7 @@ This application is functional with Stripe to collect payments in exchange for t
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
-- [AWS S3](https://aws.amazon.com/s3/))
+- [AWS S3](https://aws.amazon.com/s3/)
 
 ## Landing Page
 ![landing](https://github.com/gastrader/GPTtherapist/assets/37260212/670afecb-ba75-4f87-948c-3239f19ec98d)
