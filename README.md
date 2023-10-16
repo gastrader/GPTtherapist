@@ -21,7 +21,7 @@ Video
 ![](/public/assets/images/SS/Screenshot%202023-10-16%20154332.png)
 
 Chat
-![](/public/assets/images/SS/Screenshot%202023-10-16%20154532.png.png)
+![](/public/assets/images/SS/Screenshot%202023-10-16%20154532.png)
 
 
 ## We provide access to users transcripts as well 
