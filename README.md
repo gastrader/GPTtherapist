@@ -14,16 +14,16 @@ This application is functional with Stripe to collect payments in exchange for t
 - [AWS S3](https://aws.amazon.com/s3/)
 
 ## Landing Page
-![image](/public/assets/images/SS/Screenshot%202023-10-16%20143620.png)
+![](/public/assets/images/SS/Screenshot%202023-10-16%20143620.png)
 
 ## Fully Functional Text and Video Chat bot
 Video
-![image](/public/assets/images/SS/Screenshot%202023-10-16%20154332.png)
+![](/public/assets/images/SS/Screenshot%202023-10-16%20154332.png)
 
 Chat
-![image](/public/assets/images/SS/Screenshot%202023-10-16%20154532.png.png)
+![](/public/assets/images/SS/Screenshot%202023-10-16%20154532.png.png)
 
 
 ## We provide access to users transcripts as well 
 
-![image](/public/assets/images/SS/Screenshot%202023-10-16%20143621.png)
+![](/public/assets/images/SS/Screenshot%202023-10-16%20143621.png)
