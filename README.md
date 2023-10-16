@@ -16,16 +16,14 @@ This application is functional with Stripe to collect payments in exchange for t
 ## Landing Page
 ![image](/public/assets/images/SS/Screenshot%202023-10-16%20143620.png)
 
-![landing](https://github.com/gastrader/GPTtherapist/assets/37260212/670afecb-ba75-4f87-948c-3239f19ec98d)
-
 ## Fully Functional Text and Video Chat bot
 Video
-![video](https://github.com/gastrader/GPTtherapist/assets/37260212/3506ca05-7c49-416e-bc39-406f94c6fb82)
+![image](/public/assets/images/SS/Screenshot%202023-10-16%20154332.png)
 
 Chat
-![chat](https://github.com/gastrader/GPTtherapist/assets/37260212/3a54d4b2-09b8-4f15-9f91-ce8fd8cd8a90)
+![image](/public/assets/images/SS/Screenshot%202023-10-16%20154532.png.png)
 
 
 ## We provide access to users transcripts as well 
 
-![transcript](https://github.com/gastrader/GPTtherapist/assets/37260212/41ee4fec-50f6-4576-9f50-495c6202d71a)
+![image](/public/assets/images/SS/Screenshot%202023-10-16%20143621.png)
