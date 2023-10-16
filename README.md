@@ -1,28 +1,31 @@
-# Create T3 App
+# GPTtherapist
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is an AI empowered tool to help democratize the access to mental health support. With this application a personal digital therapist is put into everyone's pocket!
 
-## What's next? How do I make an app with this?
+This application is functional with Stripe to collect payments in exchange for tokens to use in our chat bots.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
-
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## This app was built with:
 
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+- [AWS S3](https://aws.amazon.com/s3/)
 
-## Learn More
+## Landing Page
+![image](https://github.com/gastrader/GPTtherapist/assets/37260212/e82cc652-aa83-4f7f-9add-e33264ead2da)
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+![landing](https://github.com/gastrader/GPTtherapist/assets/37260212/670afecb-ba75-4f87-948c-3239f19ec98d)
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Fully Functional Text and Video Chat bot
+Video
+![video](https://github.com/gastrader/GPTtherapist/assets/37260212/3506ca05-7c49-416e-bc39-406f94c6fb82)
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+Chat
+![chat](https://github.com/gastrader/GPTtherapist/assets/37260212/3a54d4b2-09b8-4f15-9f91-ce8fd8cd8a90)
 
-## How do I deploy this?
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## We provide access to users transcripts as well 
+
+![transcript](https://github.com/gastrader/GPTtherapist/assets/37260212/41ee4fec-50f6-4576-9f50-495c6202d71a)
